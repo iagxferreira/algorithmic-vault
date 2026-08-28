@@ -1,44 +1,37 @@
-# Binary Tree Implementation
+# Binary Trees In Rust
 
-A Python implementation of a Binary Search Tree data structure, translated from the Go implementation.
+Notes and goals for binary tree study in this Rust DSA library.
 
-## Structure
+The current implementation lives in:
 
-- `node.py` - Contains the `BinaryTreeNode` class with key attribute
-- `test_binary_tree.py` - Unit tests for the binary tree implementation
+- `src/dsa/binary_tree.rs`
 
-## Features
+## Core Concepts
 
-- **Insert**: Add values to the binary tree maintaining BST property
-- **Search**: Find if a value exists in the tree
+- A tree node owns its children with `Option<Box<TreeNode>>`.
+- Recursive traversal works naturally with borrowed nodes.
+- Breadth-first traversal usually uses `VecDeque`.
+- Many LeetCode tree problems become simpler when helper functions borrow
+  `Option<Box<TreeNode>>` instead of taking ownership.
 
-## Usage
+## Implemented Goals
 
-```python
-from binary_tree import Node
+- `TreeNode`
+- Maximum depth
+- Level-order traversal
 
-# Create a new tree
-tree = Node(data=100)
+## Next Goals
 
-# Insert values
-tree.insert(50)
-tree.insert(150)
-tree.insert(25)
-tree.insert(75)
+1. Invert binary tree.
+2. Same tree.
+3. Validate binary search tree.
+4. Lowest common ancestor in a BST.
+5. Diameter of binary tree.
+6. Balanced binary tree.
+7. Path sum.
+8. Build tree from preorder and inorder traversal.
 
-# Search for values
-found = tree.search(50)  # Returns True
-not_found = tree.search(200)  # Returns False
-```
+## Testing Approach
 
-## Running Tests
-
-```bash
-pytest test_binary_tree.py
-```
-
-## Binary Search Tree Properties
-
-- Left child node has a value less than the parent
-- Right child node has a value greater than the parent
-- No duplicate values are inserted
+Prefer small hand-built trees in unit tests. Add helpers only when repeated tree
+construction starts making tests harder to read.
