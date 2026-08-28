@@ -16,12 +16,4 @@ content to be covered:
 - [ ] dfs
 - [ ] bfs
 
-# Testing
-```shell
-pytest -v
-```
-
-# With coverage
-```shell
-pytest --cov=src --cov-report=term
-```
+This repository now contains study notes and exercise checklists only.
