@@ -1,19 +1,16 @@
 # algorithm-studies
 
-content to be covered:
-- [ ] arrays
-- [ ] linked list
-- [ ] stacks
-- [ ] queue
-- [ ] hashmap
-- [ ] priority queue
-- [ ] graphs
-- [ ] sorting
-- [ ] binary search
-- [ ] greedy algorithms
-- [ ] recursion
-- [ ] dinamic programming
-- [ ] dfs
-- [ ] bfs
+Rust library for data structures and algorithms from scratch.
 
-This repository now contains study notes and exercise checklists only.
+## Layout
+
+- `src/dsa`: core data structures
+- `src/algorithms`: reusable algorithm implementations
+- `src/strategies`: reusable solution patterns and traversal methods
+- `src/exercises`: LeetCode-style solutions built on top of the core modules
+
+## Run tests
+
+```shell
+cargo test
+```
