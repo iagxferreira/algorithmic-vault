@@ -1,0 +1,11 @@
+[package]
+name = "algorithm-studies"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "algorithm_studies"
+path = "src/lib.rs"
+
+[dependencies]
+
