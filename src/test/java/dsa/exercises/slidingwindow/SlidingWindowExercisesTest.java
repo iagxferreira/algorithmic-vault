@@ -70,7 +70,7 @@ class SlidingWindowExercisesTest {
 
         @Test
         void respectsDuplicateRequirements() {
-            assertEquals("baa", MinimumWindowSubstring.solve("cabaa", "aab"));
+            assertEquals("aba", MinimumWindowSubstring.solve("cabaa", "aab"));
         }
 
         @Test

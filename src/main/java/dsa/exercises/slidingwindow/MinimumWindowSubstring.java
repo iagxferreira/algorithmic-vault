@@ -4,8 +4,8 @@ package dsa.exercises.slidingwindow;
  * Minimum Window Substring.
  *
  * <p>The shortest substring of {@code text} containing every character of
- * {@code pattern}, counting duplicates. Return "" when there is none; the
- * answer is unique when it exists.
+ * {@code pattern}, counting duplicates. Return "" when there is none, and the
+ * leftmost one when several windows tie for shortest.
  *
  * <p>Example: {@code text = "ADOBECODEBANC", pattern = "ABC"} gives "BANC".
  *
