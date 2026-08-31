@@ -1,87 +1,126 @@
 # Roadmap
 
-Ordered so that nothing depends on something further down. Tick items off as
-their tests go green.
+Ordered so nothing depends on anything below it. Tick an item when its
+test is green.
 
-## Phase 1 - Build the containers
+Each phase links to a doc in `docs/` — **read it before you open the
+code.** The questions at the top of each doc are the actual work; the
+implementation is what proves you answered them.
 
-`dsa.structures` — implement each one from nothing.
+---
 
-- [ ] `DynamicArray` - amortised growth
-- [ ] `SinglyLinkedList` - pointer rewiring, in-place reversal
-- [ ] `DoublyLinkedList` - O(1) removal from both ends
-- [ ] `ArrayStack` - LIFO over an array
-- [ ] `CircularQueue` - FIFO over a ring buffer
-- [ ] `HashTable` - separate chaining, load factor, resizing
-- [ ] `MinHeap` - sift up, sift down, O(n) heapify
-- [ ] `BinarySearchTree` - insert, search, delete (all three cases)
-- [ ] `Trie` - prefix walking
-- [ ] `UnionFind` - path compression and union by rank
-- [ ] `LRUCache` - hash map plus doubly linked list
-- [ ] `Graph` - adjacency list, directed and undirected
-- [ ] `FenwickTree` - point update, prefix sum, `i & -i`
-- [ ] `SegmentTree` - range sum and range min, point assignment
+## Phase 1 — Build the containers
 
-## Phase 2 - Walk them
+`dsa.structures` · 14 classes
 
-`dsa.fundamentals` — the operations that turn a container into an algorithm.
+| | Doc |
+|---|---|
+| [ ] `DynamicArray` | [dynamic-array.md](./docs/structures/dynamic-array.md) |
+| [ ] `SinglyLinkedList` [ ] `DoublyLinkedList` | [linked-lists.md](./docs/structures/linked-lists.md) |
+| [ ] `ArrayStack` [ ] `CircularQueue` | [stacks-and-queues.md](./docs/structures/stacks-and-queues.md) |
+| [ ] `HashTable` [ ] `LRUCache` | [hash-tables.md](./docs/structures/hash-tables.md) |
+| [ ] `MinHeap` | [heaps.md](./docs/structures/heaps.md) |
+| [ ] `BinarySearchTree` | [binary-search-trees.md](./docs/structures/binary-search-trees.md) |
+| [ ] `Trie` | [tries.md](./docs/structures/tries.md) |
+| [ ] `UnionFind` | [union-find.md](./docs/structures/union-find.md) |
+| [ ] `Graph` | [graphs.md](./docs/structures/graphs.md) |
+| [ ] `FenwickTree` [ ] `SegmentTree` | [range-queries.md](./docs/structures/range-queries.md) |
 
-### Sorting and searching
-- [ ] `Sorting` - bubble, selection, insertion, merge, quick, heap, counting
-- [ ] `Sorting` - partition, quickselect, inversion counting
-- [ ] `BinarySearch` - sorted array, bounds, first/last occurrence
-- [ ] `BinarySearch` - rotated array, matrix, bst
-- [ ] `BinarySearch` - over the answer space (`firstTrue`, integer sqrt, peak)
+---
 
-### Running a list
-- [ ] `ListTraversal` - length, sum, middle, kth from end
-- [ ] `ListTraversal` - reversal, iterative and recursive
-- [ ] `ListTraversal` - Floyd cycle detection, palindrome check
+## Phase 2 — Walk them
 
-### Traversing a tree
-- [ ] `TreeTraversal` - pre, in and post order, recursively
-- [ ] `TreeTraversal` - the same three iteratively, with an explicit stack
-- [ ] `TreeTraversal` - level order, zigzag, right side view, root-to-leaf paths
+`dsa.algorithms` · 57 classes
 
-### Graphs
-- [ ] `GraphTraversal` - dfs recursive and iterative, bfs
-- [ ] `GraphTraversal` - distances, path reconstruction, components
-- [ ] `GraphTraversal` - cycle detection, topological sort, bipartite check
-- [ ] `ShortestPaths` - Dijkstra, with and without the path
-- [ ] `ShortestPaths` - Bellman-Ford and negative cycles
-- [ ] `ShortestPaths` - Floyd-Warshall
-- [ ] `MinimumSpanningTree` - Kruskal and Prim
+### Sorting → [sorting.md](./docs/algorithms/sorting.md)
 
-### Scanning
-- [ ] `SlidingWindow` - fixed, variable, monotonic deque
-- [ ] `PrefixSums` - 1d, 2d, difference array, subarray counting
+- [ ] `SelectionSort` [ ] `BubbleSort` [ ] `InsertionSort`
+- [ ] `MergeSort` [ ] `Partition` [ ] `QuickSort` [ ] `HeapSort` [ ] `CountingSort`
+- [ ] `QuickSelect` [ ] `CountInversions`
 
-### Arithmetic
-- [ ] `NumberTheory` - gcd/lcm, fast power, modPow, sieve, factorisation
-- [ ] `Bits` - masks, subset enumeration, xor tricks
+### Binary search → [binary-search.md](./docs/algorithms/binary-search.md)
 
-## Phase 3 - Use the standard library
+- [ ] `BinarySearch` [ ] `Bounds` [ ] `SearchMatrix` [ ] `SearchBst`
+- [ ] `RotatedArray` [ ] `SearchAnswer` [ ] `FindPeak`
 
-`dsa.usage` — the same ground, now via the JDK, fluently.
+### Running a list → [linked-lists.md](./docs/algorithms/linked-lists.md)
 
-- [ ] `ListUsage` - build, convert, reverse, rotate, filter, sort by comparator
-- [ ] `MapUsage` - counting, `getOrDefault`, `merge`, `computeIfAbsent`, grouping
-- [ ] `SetUsage` - dedupe, union/intersection/difference, `TreeSet` neighbours
-- [ ] `DequeUsage` - as a stack, as a queue, from both ends, bounded history
-- [ ] `PriorityQueueUsage` - min vs max heap, top-k, merging sorted input
-- [ ] `ArrayUsage` - `Arrays` methods, comparator sorting, deep copy, transpose
-- [ ] `StringUsage` - `StringBuilder`, split/join, normalising, counting
+- [ ] `TraverseList` [ ] `ReverseList` [ ] `FastSlowPointers`
+- [ ] `DetectCycle` [ ] `ListPalindrome`
+
+### Traversing a tree → [tree-traversal.md](./docs/algorithms/tree-traversal.md)
+
+- [ ] `PreOrder` [ ] `InOrder` [ ] `PostOrder` [ ] `LevelOrder` [ ] `TreeMetrics`
+
+### Graphs, unweighted → [graph-traversal.md](./docs/algorithms/graph-traversal.md)
+
+- [ ] `DepthFirstSearch` [ ] `BreadthFirstSearch` [ ] `ConnectedComponents`
+- [ ] `CycleDetection` [ ] `TopologicalSort` [ ] `Bipartite`
+
+### Graphs, weighted → [shortest-paths.md](./docs/algorithms/shortest-paths.md)
+
+- [ ] `Dijkstra` [ ] `BellmanFord` [ ] `FloydWarshall` [ ] `Kruskal` [ ] `Prim`
+
+### Sliding window → [sliding-window.md](./docs/algorithms/sliding-window.md)
+
+- [ ] `FixedWindow` [ ] `VariableWindow` [ ] `MonotonicWindow`
+
+### Prefix sums → [prefix-sums.md](./docs/algorithms/prefix-sums.md)
+
+- [ ] `PrefixSum` [ ] `PrefixSum2D` [ ] `DifferenceArray` [ ] `SubarrayCount`
+
+### Number theory → [number-theory.md](./docs/algorithms/number-theory.md)
+
+- [ ] `Gcd` [ ] `FastPower` [ ] `Primes` [ ] `Factorisation` [ ] `Binomial`
+
+### Bits → [bits.md](./docs/algorithms/bits.md)
+
+- [ ] `BitBasics` [ ] `XorTricks` [ ] `Bitmasks`
+
+---
+
+## Phase 3 — Use the standard library
+
+`dsa.usage` · 7 classes · [collections.md](./docs/usage/collections.md)
+
+- [ ] `ListUsage` [ ] `MapUsage` [ ] `SetUsage` [ ] `DequeUsage`
+- [ ] `PriorityQueueUsage` [ ] `ArrayUsage` [ ] `StringUsage`
+
+---
+
+## A suggested path through it
+
+You do not have to finish Phase 1 before starting Phase 2, and the
+dependencies are looser than the numbering suggests. If you want a
+narrower path, this order gets you to useful ground fastest:
+
+1. `DynamicArray`, `SinglyLinkedList` — the two memory models
+2. `TraverseList`, `ReverseList`, `FastSlowPointers` — pointer discipline
+3. `BinarySearch`, `Bounds`, `SearchAnswer` — the highest-leverage technique here
+4. `MergeSort`, `Partition`, `QuickSort` — divide and conquer
+5. `ArrayStack`, `CircularQueue`, `MinHeap` — the three access disciplines
+6. `PreOrder`/`InOrder`/`PostOrder`/`LevelOrder` — then `BinarySearchTree`
+7. `Graph`, `DepthFirstSearch`, `BreadthFirstSearch` — then everything graph
+8. `UnionFind` → `Kruskal`; `MinHeap` → `Dijkstra` and `Prim`
+9. `PrefixSum`, `VariableWindow` — the two cheapest wins in the repo
+10. `dsa.usage` — anytime; it is independent of the rest
 
 ## Then what
 
-Two directions, and they are different sports:
-
-**Systems and language depth** — extend this repo. Balanced trees (AVL or
-red-black rotations), a segment tree with lazy propagation, an iterator that
-honours `ConcurrentModificationException`, a `hashCode`/`equals` contract done
-properly, generics with bounded wildcards.
-
 **Competitive programming** — go to
-[`competitive-programming-notebook`](../competitive-programming-notebook/) and
-follow its roadmap. That is where the judge problems, the contest I/O template
-and the timed practice live. This repo is the warm-up for it, not a substitute.
+[`competitive-programming-notebook`](../competitive-programming-notebook/)
+and follow its roadmap. Every topic doc here ends with the matching
+problems there. This repo is the warm-up, not a substitute for solving
+under a clock.
+
+**More depth here** — things deliberately left out, worth adding once the
+above is green:
+
+- Balanced trees: AVL or red-black rotations, and why `TreeMap` needs them
+- Segment tree with **lazy propagation**, for range updates
+- Strongly connected components (Tarjan or Kosaraju), bridges, articulation points
+- String algorithms: KMP, Z-function, rolling hash, suffix array
+- Max flow (Dinic), bipartite matching
+- Bitmask and digit dynamic programming
+- An `Iterator` that honours `ConcurrentModificationException`, and a
+  `hashCode`/`equals` contract done properly
