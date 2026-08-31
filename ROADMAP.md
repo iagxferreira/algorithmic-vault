@@ -3,9 +3,9 @@
 Ordered so that nothing depends on something further down. Tick items off as
 their tests go green.
 
-## Phase 1 - build the containers
+## Phase 1 - Build the containers
 
-`dsa.structures`
+`dsa.structures` — implement each one from nothing.
 
 - [ ] `DynamicArray` - amortised growth
 - [ ] `SinglyLinkedList` - pointer rewiring, in-place reversal
@@ -22,21 +22,28 @@ their tests go green.
 - [ ] `FenwickTree` - point update, prefix sum, `i & -i`
 - [ ] `SegmentTree` - range sum and range min, point assignment
 
-## Phase 2 - learn the techniques
+## Phase 2 - Walk them
 
-`dsa.fundamentals`
+`dsa.fundamentals` — the operations that turn a container into an algorithm.
 
+### Sorting and searching
 - [ ] `Sorting` - bubble, selection, insertion, merge, quick, heap, counting
 - [ ] `Sorting` - partition, quickselect, inversion counting
 - [ ] `BinarySearch` - sorted array, bounds, first/last occurrence
 - [ ] `BinarySearch` - rotated array, matrix, bst
 - [ ] `BinarySearch` - over the answer space (`firstTrue`, integer sqrt, peak)
-- [ ] `ListTraversal` - length, middle, kth from end
+
+### Running a list
+- [ ] `ListTraversal` - length, sum, middle, kth from end
 - [ ] `ListTraversal` - reversal, iterative and recursive
 - [ ] `ListTraversal` - Floyd cycle detection, palindrome check
+
+### Traversing a tree
 - [ ] `TreeTraversal` - pre, in and post order, recursively
 - [ ] `TreeTraversal` - the same three iteratively, with an explicit stack
-- [ ] `TreeTraversal` - level order, zigzag, right side view, paths
+- [ ] `TreeTraversal` - level order, zigzag, right side view, root-to-leaf paths
+
+### Graphs
 - [ ] `GraphTraversal` - dfs recursive and iterative, bfs
 - [ ] `GraphTraversal` - distances, path reconstruction, components
 - [ ] `GraphTraversal` - cycle detection, topological sort, bipartite check
@@ -44,112 +51,37 @@ their tests go green.
 - [ ] `ShortestPaths` - Bellman-Ford and negative cycles
 - [ ] `ShortestPaths` - Floyd-Warshall
 - [ ] `MinimumSpanningTree` - Kruskal and Prim
+
+### Scanning
 - [ ] `SlidingWindow` - fixed, variable, monotonic deque
 - [ ] `PrefixSums` - 1d, 2d, difference array, subarray counting
+
+### Arithmetic
 - [ ] `NumberTheory` - gcd/lcm, fast power, modPow, sieve, factorisation
 - [ ] `Bits` - masks, subset enumeration, xor tricks
 
-## Phase 3 - patterns on real problems
+## Phase 3 - Use the standard library
 
-`dsa.exercises`
+`dsa.usage` — the same ground, now via the JDK, fluently.
 
-### Arrays and hashing
-- [ ] Two Sum
-- [ ] Contains Duplicate
-- [ ] Valid Anagram
-- [ ] Group Anagrams
-- [ ] Product of Array Except Self
-- [ ] Top K Frequent Elements
-- [ ] Longest Consecutive Sequence
+- [ ] `ListUsage` - build, convert, reverse, rotate, filter, sort by comparator
+- [ ] `MapUsage` - counting, `getOrDefault`, `merge`, `computeIfAbsent`, grouping
+- [ ] `SetUsage` - dedupe, union/intersection/difference, `TreeSet` neighbours
+- [ ] `DequeUsage` - as a stack, as a queue, from both ends, bounded history
+- [ ] `PriorityQueueUsage` - min vs max heap, top-k, merging sorted input
+- [ ] `ArrayUsage` - `Arrays` methods, comparator sorting, deep copy, transpose
+- [ ] `StringUsage` - `StringBuilder`, split/join, normalising, counting
 
-### Two pointers
-- [ ] Valid Palindrome
-- [ ] Two Sum II (sorted)
-- [ ] 3Sum
-- [ ] Container With Most Water
-- [ ] Trapping Rain Water
-- [ ] Sort Colors (Dutch flag)
+## Then what
 
-### Sliding window
-- [ ] Best Time to Buy and Sell Stock
-- [ ] Longest Repeating Character Replacement
-- [ ] Permutation in String
-- [ ] Max Consecutive Ones III
-- [ ] Minimum Window Substring
+Two directions, and they are different sports:
 
-### Linked lists
-- [ ] Merge Two Sorted Lists
-- [ ] Remove Nth Node From End
-- [ ] Reorder List
-- [ ] Add Two Numbers
-- [ ] Merge k Sorted Lists
-- [ ] Reverse Nodes in k-Group
+**Systems and language depth** — extend this repo. Balanced trees (AVL or
+red-black rotations), a segment tree with lazy propagation, an iterator that
+honours `ConcurrentModificationException`, a `hashCode`/`equals` contract done
+properly, generics with bounded wildcards.
 
-### Stacks
-- [ ] Valid Parentheses
-- [ ] Min Stack
-- [ ] Evaluate Reverse Polish Notation
-- [ ] Daily Temperatures (monotonic stack)
-- [ ] Largest Rectangle in Histogram
-
-### Trees
-- [ ] Invert Binary Tree
-- [ ] Same Tree
-- [ ] Validate Binary Search Tree
-- [ ] Lowest Common Ancestor of a BST
-- [ ] Kth Smallest Element in a BST
-- [ ] Diameter of Binary Tree
-- [ ] Construct Tree from Preorder and Inorder
-
-### Heaps
-- [ ] Kth Largest Element
-- [ ] K Closest Points to Origin
-- [ ] Last Stone Weight
-- [ ] Task Scheduler
-- [ ] Find Median from Data Stream
-
-### Graphs
-- [ ] Number of Islands
-- [ ] Rotting Oranges (multi-source bfs)
-- [ ] Course Schedule
-- [ ] Pacific Atlantic Water Flow
-- [ ] Network Delay Time (Dijkstra)
-- [ ] Cheapest Flights Within K Stops (Bellman-Ford)
-
-### Backtracking
-- [ ] Subsets
-- [ ] Permutations
-- [ ] Combination Sum
-- [ ] Word Search
-- [ ] Generate Parentheses
-- [ ] N-Queens
-
-### Dynamic programming
-- [ ] Maximum Subarray (Kadane)
-- [ ] Climbing Stairs
-- [ ] House Robber
-- [ ] Coin Change
-- [ ] Longest Increasing Subsequence
-- [ ] Longest Common Subsequence
-- [ ] Word Break
-- [ ] Edit Distance
-- [ ] Unique Paths
-
-### Greedy and intervals
-- [ ] Jump Game
-- [ ] Jump Game II
-- [ ] Gas Station
-- [ ] Merge Intervals
-- [ ] Non-overlapping Intervals
-- [ ] Meeting Rooms II
-
-## Later
-
-Things deliberately left out, worth adding once the above is green:
-
-- Segment tree with lazy propagation, and range assignment
-- Strongly connected components (Tarjan or Kosaraju), bridges and articulation points
-- Max flow (Dinic), bipartite matching
-- String algorithms: KMP, Z-function, rolling hash, suffix array
-- Bitmask and digit dynamic programming, convex hull trick
-- Balanced trees: AVL or red-black rotations
+**Competitive programming** — go to
+[`competitive-programming-notebook`](../competitive-programming-notebook/) and
+follow its roadmap. That is where the judge problems, the contest I/O template
+and the timed practice live. This repo is the warm-up for it, not a substitute.
