@@ -1,84 +1,56 @@
 # algorithm-studies
 
-Data structures and algorithms in Java, at the level of **build it, walk
-it, use it**. No contest problems here — those live in
-[`competitive-programming-notebook`](../competitive-programming-notebook/).
+Learn data structures and algorithms by building them, reasoning about their
+costs, and then using Go's standard library. This repository is a study
+workbook: read the topic notes, implement one structure or technique, and
+prove its behaviour with focused tests.
 
-Every class in `src/main` is a **stub**: a signature, a short javadoc, and
-a body that throws `UnsupportedOperationException`. Every stub has a JUnit
-test describing the expected behaviour, and every topic has a markdown
-roadmap in `docs/` saying what to understand before you write any code.
-
-**78 classes, 77 test classes, 258 methods to implement.** There are no
-reference solutions in this repo, on purpose.
+The active implementation is Go. The existing Java source and Gradle setup
+are retained temporarily as migration material; they are not the target for
+new work. Go implementations live in small, focused packages at the
+repository root (for example, `structures`). Topics will move across from
+Java as they are revisited, with their contracts and tests rewritten in Go
+rather than mechanically translated.
 
 ## Start here
 
-1. Read [`ROADMAP.md`](./ROADMAP.md) and pick the first unticked item.
-2. Read that topic's doc in `docs/` — the questions at the top are the
-   point; if you cannot answer them, the code will not teach you.
-3. Open the one class. Run its one test. Make it green.
+1. Read [`ROADMAP.md`](./ROADMAP.md) and pick the first unticked Go topic.
+2. Read the topic note in `docs/` and answer its questions before coding.
+3. Add a focused `_test.go` file, run it, then implement the behaviour.
 
 ```shell
-mise install                                  # once: Temurin 21 + Gradle 9.7
-./gradlew test --tests '*MergeSortTest'       # one sitting
-./gradlew test --tests 'dsa.algorithms.sorting.*'   # one topic
-./gradlew test                                # everything (all red on a fresh clone)
+go test ./structures -run DynamicArray
+go test ./structures
+go test ./...
 ```
 
-If `mise` is not activated in your shell, prefix with `mise x --`.
+Go 1.27 or newer is currently used for the module. No third-party test
+framework is required; use `testing` and standard-library tools.
 
 ## Layout
 
 ```
-src/main/java/dsa/
-  structures/     build it  — 14 containers written from nothing
-  algorithms/     walk it   — 57 techniques, one class each
-    sorting/  search/  list/  tree/  graph/  scanning/  numbers/
-  usage/          use it    —  7 drills on the JDK equivalents
-  support/                  — ListNode, TreeNode + builders (already written)
+structures/       data structures implemented from first principles
+algorithms/       algorithm techniques (added as migrated)
+usage/            idiomatic Go standard-library practice (added as migrated)
 docs/
-  structures/     one roadmap per data structure
-  algorithms/     one roadmap per technique
-  usage/
+  structures/     one learning roadmap per data structure
+  algorithms/     one learning roadmap per technique
+  usage/          standard-library exercises
 ```
 
-One class per technique, on purpose: a sitting is "open `MergeSort.java`,
-run `MergeSortTest`, make it green" — not "pick one of ten stubs in a
-file".
+The Go packages are deliberately small and topic-focused. The zero value,
+generic constraints, slices, maps, interfaces, and explicit errors are part
+of the learning material—not details to hide behind a Java-shaped API.
 
-## The three tiers
+## The learning sequence
 
-**`dsa.structures` — build it.** Dynamic array, singly and doubly linked
-lists, stack, ring-buffer queue, hash table, min-heap, BST, trie,
-union-find, LRU cache, graph, Fenwick tree, segment tree.
+1. **Build** — implement containers and understand their invariants and
+   complexity.
+2. **Walk** — implement algorithms that operate on those structures.
+3. **Use** — compare your implementations with Go's built-in types and
+   standard library.
 
-**`dsa.algorithms` — walk it.** Seven sorts plus partitioning and
-quickselect; binary search over arrays, matrices, BSTs and the answer
-space; list traversal, reversal and cycle detection; all four tree orders
-both recursively and iteratively; DFS, BFS, topological sort, Dijkstra,
-Bellman-Ford, Floyd-Warshall, Kruskal, Prim; sliding windows and prefix
-sums; gcd, fast exponentiation, sieves and bit tricks.
-
-**`dsa.usage` — use it.** The same ground via `List`, `Map`, `Set`,
-`Deque`, `PriorityQueue`, `Arrays` and `String`. Writing a hash table
-teaches you what it costs; knowing `merge(key, 1, Integer::sum)` is what
-makes you fast. Both, in that order.
-
-## How a topic doc is laid out
-
-Every file in `docs/` has the same five sections:
-
-- **Why this topic** — what it buys you, and where it stops applying
-- **Understand before you write code** — numbered questions to answer out
-  loud first
-- **Order to implement** — a checklist, one class per line
-- **Traps** — the specific failures the tests actually check
-- **Then challenge yourself** — the matching problems in the notebook
-
-## Where the problems went
-
-Anything shaped like a judge submission belongs in
-`competitive-programming-notebook`, which has the recall-card format, the
-platform layout and the run/stress tooling for it. Finish a topic here,
-then go solve its problems there — every topic doc ends with the list.
+Judge-style practice belongs in
+[`competitive-programming-notebook`](../competitive-programming-notebook/).
+Finish a topic here, then practice solving problems there.

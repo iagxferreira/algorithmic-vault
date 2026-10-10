@@ -1,58 +1,56 @@
 # Dynamic array
 
-`dsa.structures.DynamicArray` — your own `ArrayList`
+`structures.DynamicArray[T]` — a growable array built on a Go slice backing
+store.
 
 ## Why build it
 
-Because "append is O(1)" is a lie that is true on average, and the reason
-why is the first piece of amortised analysis most people meet. Every other
-structure in this repo is built on top of an array, so start here.
+Amortized append is the first practical use of amortized analysis. Go slices
+already provide dynamic growth, so implementing the backing store yourself
+makes capacity growth and element shifting visible instead of hiding the
+lesson behind `append`.
 
 ## Understand before you write code
 
-1. **Why doubling, and not growing by a constant.** Growing by +1 each time
-   makes n appends cost 1+2+...+n = O(n²). Doubling makes the copies cost
-   1+2+4+...+n < 2n, so n appends cost O(n) total — O(1) *amortised* each.
-   Work that sum out; it is the whole lesson.
-2. **What "amortised" actually claims.** Not that every append is fast —
-   one in every n is genuinely O(n). It claims the *average over a sequence*
-   is O(1). A real-time system cares about the difference.
-3. **Why `size` and `capacity` are different numbers.** The backing array is
-   usually bigger than the contents. Confusing the two is the main bug here.
-4. **Why insert and remove are O(n).** Everything after the index shifts.
-   That is the fundamental trade against a linked list: arrays win on random
-   access, lose on middle insertion.
-5. **Why the backing array is `Object[]`.** Java cannot instantiate `T[]` —
-   generics are erased at runtime. You store `Object[]` and cast on read.
-   This is a language wart, not a design choice.
+1. **Why geometric growth?** Growing by one causes quadratic total copying;
+   doubling keeps n appends O(n) total and O(1) amortized per append. Work
+   through the geometric sum.
+2. **What does amortized mean?** Some appends copy every element. The claim is
+   about the cost across a sequence, not a worst-case guarantee for each call.
+3. **Why track size separately from capacity?** Allocated storage can contain
+   unused slots. Only indices in `[0, Len())` are valid elements.
+4. **Why do middle insertions and removals cost O(n)?** The elements after the
+   changed index must shift.
+5. **Why use a type parameter constraint?** `IndexOf` needs equality. The
+   `comparable` constraint makes that requirement explicit at compile time;
+   types containing slices or maps cannot be elements in this version.
+6. **Why is the zero value useful?** A zero-value `DynamicArray[T]` is empty
+   and ready to use, which is an important Go API design property.
 
 ## Implement
 
-- [ ] `size`, `isEmpty` — trivial, but get `size` vs `capacity` straight
-- [ ] `add` — with the doubling grow
-- [ ] `get`, `set` — with bounds checks that throw `IndexOutOfBoundsException`
-- [ ] `insert`, `removeAt` — the shifting
-- [ ] `indexOf`
+- [x] `Len`, `Empty` — expose logical size, not capacity
+- [x] `Append` — manually grow by doubling and copy existing values
+- [x] `At`, `Set` — return `ErrIndexOutOfRange` for invalid indices
+- [x] `Insert`, `RemoveAt` — shift elements in the correct direction
+- [x] `IndexOf`
 
 ## Traps
 
-- **Bounds checks.** `get(size)` must throw, even when `size < capacity` and
-  the slot physically exists. Tested.
-- **Shifting direction.** Insert shifts right, and must copy from the *end*
-  backwards or it smears one value over the tail. Remove shifts left, and
-  must copy from the front forwards.
-- **Leaving a stale reference** in the vacated slot after remove keeps the
-  object alive. Null it out.
-- **`indexOf` with null elements** or with `equals` vs `==` — decide and be
-  consistent.
+- `At(Len())` is invalid even if spare capacity exists.
+- Insertion at `Len()` is valid; insertion beyond `Len()` is not.
+- For overlapping shifts, insert from the end or use Go's overlap-safe `copy`.
+- Clear the vacated slot after removal so references are not retained.
+- Test insertion both when there is spare capacity and when growth is needed.
 
 ## Test it
 
 ```shell
-./gradlew test --tests '*DynamicArrayTest'
+go test ./structures -run DynamicArray
 ```
 
 ## Then use it
 
-`dsa.usage.ListUsage` is the same ground via the JDK. Build the structure
-first, then learn the idioms — see [`docs/usage/collections.md`](../usage/collections.md).
+Compare this implementation with built-in slices and the `slices` package.
+The goal is not to replace slices in ordinary Go code; it is to understand
+their behaviour and API tradeoffs.

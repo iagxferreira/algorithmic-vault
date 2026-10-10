@@ -1,4 +1,9 @@
-# Build output
+# Go build output
+*.test
+*.out
+vendor/
+
+# Legacy Java / Gradle build output
 build/
 out/
 bin/
@@ -7,7 +12,7 @@ target/
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
 
-# Gradle
+# Legacy Gradle
 .gradle/
 gradle-app.setting
 .gradletasknamecache
