@@ -5,12 +5,8 @@ costs, and then using Go's standard library. This repository is a study
 workbook: read the topic notes, implement one structure or technique, and
 prove its behaviour with focused tests.
 
-The active implementation is Go. The existing Java source and Gradle setup
-are retained temporarily as migration material; they are not the target for
-new work. Go implementations live in small, focused packages at the
-repository root (for example, `structures`). Topics will move across from
-Java as they are revisited, with their contracts and tests rewritten in Go
-rather than mechanically translated.
+This is a Go-only project. Implementations live in small, focused packages at
+the repository root (for example, `structures`), with tests alongside them.
 
 ## Start here
 
@@ -31,8 +27,8 @@ framework is required; use `testing` and standard-library tools.
 
 ```
 structures/       data structures implemented from first principles
-algorithms/       algorithm techniques (added as migrated)
-usage/            idiomatic Go standard-library practice (added as migrated)
+algorithms/       algorithm techniques
+usage/            idiomatic Go standard-library practice
 docs/
   structures/     one learning roadmap per data structure
   algorithms/     one learning roadmap per technique
@@ -41,7 +37,7 @@ docs/
 
 The Go packages are deliberately small and topic-focused. The zero value,
 generic constraints, slices, maps, interfaces, and explicit errors are part
-of the learning material—not details to hide behind a Java-shaped API.
+of the learning material.
 
 ## The learning sequence
 

@@ -2,8 +2,7 @@
 
 This is the Go learning path. Tick a topic when its tests pass and you can
 explain the invariant and complexity without leaning on the implementation.
-The old Java roadmap is being migrated topic-by-topic; unchecked topics do
-not yet have an active Go implementation.
+Unchecked topics do not yet have an active Go implementation.
 
 ## Phase 1 — Build the containers
 
@@ -22,7 +21,7 @@ not yet have an active Go implementation.
 
 ## Phase 2 — Walk the structures
 
-Migrate the existing algorithm topics into focused Go packages and tests.
+Implement the algorithm topics in focused Go packages with focused tests.
 
 - [ ] Sorting, partitioning, quickselect, inversion counting
 - [ ] Binary search, bounds, matrix search, answer-space search
@@ -56,8 +55,7 @@ Migrate the existing algorithm topics into focused Go packages and tests.
 - Prefer a usable zero value when that makes the type safe and clear.
 - Use generics for reusable containers, with the narrowest constraint the
   operations actually require.
-- Return errors for invalid operations; do not use Java exceptions or panic
-  for ordinary input errors.
+- Return errors for invalid operations; do not panic for ordinary input errors.
 - Keep tests beside implementation in the same package, named `*_test.go`.
 - Each topic should explain invariants, complexity, edge cases, and relevant
   Go-specific design choices.
