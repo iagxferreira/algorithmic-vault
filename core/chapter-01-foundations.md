@@ -63,3 +63,10 @@ the nearest unvisited block. The route may involve some extra walking, but it is
 quick to plan and still gets every letter delivered. This is a useful trade-off
 when a near-best route is sufficient and timely planning matters more than
 proving the route is optimal.
+
+### Exercise 1.2-1: Algorithmic content at the application level
+
+A web search engine such as Google relies on algorithms to find pages relevant
+to a query, rank them, and order the results. These algorithms are central to
+the application because their quality directly affects how useful the search
+results are.
