@@ -1,22 +1,19 @@
-# Core Algorithms
+# Core Implementations
 
-Notes and exercise answers scoped to *Introduction to Algorithms* (CLRS).
+Use this folder for hands-on C++ implementations of algorithms and data
+structures studied in this repository. Organize work by topic, for example:
 
-Use this folder for concepts, proofs, complexity analysis, and written exercise
-answers from the book. Keep each chapter in its own LaTeX source file; for
-example, `chapter-02-getting-started.tex`.
-
-Compile a chapter from the repository root with:
-
-```sh
-pdflatex core/chapter-01-foundations.tex
+```text
+core/
+  algorithms/
+    sorting/
+    graph/
+  data-structures/
+    trees/
+    graphs/
 ```
 
-## Chapter template
-
-```latex
-\section{Chapter N: Chapter title}
-
-\subsection*{Exercise N.N-N: Exercise title}
-Answer.
-```
+For each implementation, record its assumptions, correctness idea, complexity,
+and important edge cases. Keep book-specific explanations and exercise answers
+under [`notes/books/`](../notes/books/README.md); these implementation files
+should stand on their own and be tested against representative cases.

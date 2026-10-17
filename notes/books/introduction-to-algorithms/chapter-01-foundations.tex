@@ -1,19 +1,6 @@
-\documentclass[11pt]{article}
+\chapter{The Role of Algorithms}
 
-\usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb}
-\usepackage[margin=1in]{geometry}
-
-\title{Introduction to Algorithms (CLRS)\\Chapter 1: The Role of Algorithms}
-\author{}
-\date{}
-
-\begin{document}
-\maketitle
-
-\section{Exercises}
-
-\subsection*{Exercise 1.1-1: Real-world example requiring a convex hull}
+\section{Exercise 1.1-1: Real-world example requiring a convex hull}
 
 A marketing team could plot the locations of people who engaged with a social
 media campaign and compute their convex hull. The resulting boundary gives the
@@ -21,7 +8,7 @@ team a rough geographic zone around those users to target with a follow-up
 campaign. It is an approximation: the hull may include places where there are
 no engaged users.
 
-\subsection*{Exercise 1.1-2: Other measures of efficiency}
+\section{Exercise 1.1-2: Other measures of efficiency}
 
 Besides running time, an algorithm can be judged by how much memory and storage
 it uses, how much hardware it requires, and how much energy or network bandwidth
@@ -30,7 +17,7 @@ may require more expensive machines, while one that takes longer to run uses
 more computing time and can increase operating costs. The most important measure
 depends on the setting and its constraints.
 
-\subsection*{Exercise 1.1-3: Strengths and limitations of a data structure}
+\section{Exercise 1.1-3: Strengths and limitations of a data structure}
 
 I like trees and graphs because they provide useful abstractions for modeling
 relationships and can make solutions easier to adapt to different problems. A
@@ -40,7 +27,7 @@ unbalanced: operations may then take linear time. Keeping it balanced avoids
 that degradation, but adds implementation complexity and the cost of
 rebalancing after updates.
 
-\subsection*{Exercise 1.1-4: Shortest path and traveling salesman}
+\section{Exercise 1.1-4: Shortest path and traveling salesman}
 
 Both problems can be represented as weighted graphs and seek a route with a
 small total edge weight. In a shortest-path problem, the route connects a
@@ -59,7 +46,7 @@ but checking every possible tour takes factorial time, which quickly becomes
 impractical. NP-completeness does not mean brute force is impossible; it means
 no polynomial-time algorithm is known for the decision problem.
 
-\subsection*{Exercise 1.1-5: Exact and approximate solutions}
+\section{Exercise 1.1-5: Exact and approximate solutions}
 
 \paragraph{Exact solution.}
 A mail carrier needs to deliver letters to every block in a small condominium
@@ -76,14 +63,14 @@ The route may involve some extra walking, but it is quick to plan and still gets
 every letter delivered. This is a useful trade-off when a near-best route is
 sufficient and timely planning matters more than proving the route is optimal.
 
-\subsection*{Exercise 1.2-1: Algorithmic content at the application level}
+\section{Exercise 1.2-1: Algorithmic content at the application level}
 
 A web search engine such as Google relies on algorithms to find pages relevant
 to a query, rank them, and order the results. These algorithms are central to
 the application because their quality directly affects how useful the search
 results are.
 
-\subsection*{Exercise 1.2-2: Compare insertion sort and merge sort}
+\section{Exercise 1.2-2: Compare insertion sort and merge sort}
 
 Insertion sort is faster when its step count is smaller:
 \begin{equation*}
@@ -100,7 +87,7 @@ ratio decreases for $n \ge 3$. At $n=43$, it is about $1.0095$, while at
 $n=44$, it is about $0.9926$. Thus the inequality stops holding between 43 and
 44; check $n=2$ separately, where it also holds.
 
-\subsection*{Exercise 1.2-3: Compare quadratic and exponential running times}
+\section{Exercise 1.2-3: Compare quadratic and exponential running times}
 
 We need the smallest integer $n$ for which
 \begin{equation*}
@@ -114,5 +101,3 @@ $2^{15}=32{,}768$, so the exponential algorithm is faster. The ratio
 $2^n/n^2$ increases for integers $n \ge 3$, and at $n=14$ it is still below
 100; checking $n=1,2$ separately, the smallest value that satisfies the
 inequality is therefore $n=15$.
-
-\end{document}

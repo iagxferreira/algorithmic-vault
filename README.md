@@ -13,6 +13,14 @@ contest constraints.
 4. Compile with warnings and test boundary cases before considering a topic
    complete.
 
+## Study materials
+
+- [`core/`](./core/README.md) is for hands-on C++ algorithm and data-structure
+  implementations.
+- [`notes/`](./notes/README.md) organizes book notes by title: LaTeX sources for
+  ebook-ready content and Markdown for supporting project notes. Each book, such
+  as CLRS or *Grokking Algorithms*, gets its own folder under `notes/books/`.
+
 ## C++ baseline
 
 - Use **C++20** unless a problem or judge requires another standard.
