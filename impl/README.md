@@ -1,10 +1,10 @@
-# Core Implementations
+# Implementations
 
 Use this folder for hands-on C++ implementations. Organize by topic, then keep
 each algorithm or data structure's related files together. For example:
 
 ```text
-core/
+impl/
   algorithms/
     sorting/
       insertion_sort/
@@ -15,8 +15,7 @@ core/
         Makefile
     graph/
   data-structures/
-    trees/
-    graphs/
+    .gitkeep
 ```
 
 The `insertion_sort/` folder is a starting example. Add a header, implementation,
