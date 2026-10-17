@@ -18,8 +18,9 @@ contest constraints.
 - [`core/`](./core/README.md) is for hands-on C++ algorithm and data-structure
   implementations.
 - [`notes/`](./notes/README.md) organizes book notes by title: LaTeX sources for
-  ebook-ready content and Markdown for supporting project notes. Each book, such
-  as CLRS or *Grokking Algorithms*, gets its own folder under `notes/books/`.
+  ebook-ready content and Markdown for supporting project notes. Each book and
+  edition, such as CLRS (3rd edition) or *Grokking Algorithms*, gets its own
+  folder under `notes/books/`.
 
 ## C++ baseline
 

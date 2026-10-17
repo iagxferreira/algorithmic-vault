@@ -1,8 +1,8 @@
-# Introduction to Algorithms (CLRS)
+# Introduction to Algorithms, Third Edition (CLRS)
 
-LaTeX notes and exercise answers for *Introduction to Algorithms* (CLRS). This
-folder is organized as a book so the chapters can eventually be compiled into
-an ebook.
+LaTeX notes and exercise answers for the third edition of *Introduction to
+Algorithms* (CLRS), by Cormen, Leiserson, Rivest, and Stein. This folder is
+organized as a book so the chapters can eventually be compiled into an ebook.
 
 Keep each chapter in its own LaTeX source file and include it from `book.tex`.
 For example, add a future chapter as `chapter-02-getting-started.tex` and include
