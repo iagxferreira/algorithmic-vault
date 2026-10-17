@@ -1,52 +1,40 @@
-# algorithm-studies
+# Algorithm Studies
 
-Learn data structures and algorithms by building them, reasoning about their
-costs, and then using Go's standard library. This repository is a study
-workbook: read the topic notes, implement one structure or technique, and
-prove its behaviour with focused tests.
-
-This is a Go-only project. Implementations live in small, focused packages at
-the repository root (for example, `structures`), with tests alongside them.
+A C++ competitive-programming workbook for learning algorithms and data
+structures through problem solving. The goal is to build sound reasoning,
+recognize common techniques, and write correct, efficient C++ solutions under
+contest constraints.
 
 ## Start here
 
-1. Read [`ROADMAP.md`](./ROADMAP.md) and pick the first unticked Go topic.
-2. Read the topic note in `docs/` and answer its questions before coding.
-3. Add a focused `_test.go` file, run it, then implement the behaviour.
+1. Follow [`ROADMAP.md`](./ROADMAP.md) and choose a topic.
+2. Study the technique, including its invariant, complexity, and edge cases.
+3. Solve representative problems and record the reusable idea and pitfalls.
+4. Compile with warnings and test boundary cases before considering a topic
+   complete.
 
-```shell
-go test ./structures -run DynamicArray
-go test ./structures
-go test ./...
+## C++ baseline
+
+- Use **C++20** unless a problem or judge requires another standard.
+- Prefer standard-library containers and algorithms; implement core structures
+  from scratch when studying their internals.
+- Make complexity and integer bounds explicit. Use 64-bit integers when the
+  constraints require them, and avoid overflow in intermediate calculations.
+- Keep solutions self-contained and suitable for online judges: standard input
+  and output, no external dependencies, and no reliance on local files.
+
+Put the current solution in `main.cpp`, then build and run it with:
+
+```sh
+make build
+make run
 ```
 
-Go 1.27 or newer is currently used for the module. No third-party test
-framework is required; use `testing` and standard-library tools.
+The `Makefile` uses `g++` and C++20 by default. Override `CXX`, `SOURCE`, or
+`TARGET` when needed; pass runtime arguments with `ARGS`.
 
-## Layout
+## Learning approach
 
-```
-structures/       data structures implemented from first principles
-algorithms/       algorithm techniques
-usage/            idiomatic Go standard-library practice
-docs/
-  structures/     one learning roadmap per data structure
-  algorithms/     one learning roadmap per technique
-  usage/          standard-library exercises
-```
-
-The Go packages are deliberately small and topic-focused. The zero value,
-generic constraints, slices, maps, interfaces, and explicit errors are part
-of the learning material.
-
-## The learning sequence
-
-1. **Build** — implement containers and understand their invariants and
-   complexity.
-2. **Walk** — implement algorithms that operate on those structures.
-3. **Use** — compare your implementations with Go's built-in types and
-   standard library.
-
-Judge-style practice belongs in
-[`competitive-programming-notebook`](../competitive-programming-notebook/).
-Finish a topic here, then practice solving problems there.
+Prioritize problem-solving patterns over accumulating code snippets. For each
+topic, understand when it applies, prove why it works, analyze time and space,
+and practice variations. Keep reusable templates small, tested, and justified.
