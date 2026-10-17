@@ -4,11 +4,13 @@ BUILD_DIR := build
 EXAMPLE := $(BUILD_DIR)/example
 TEST := $(BUILD_DIR)/insertion_sort_test
 
-.PHONY: all build run test clean
+.PHONY: all build example run test clean
 
 all: build
 
 build: $(EXAMPLE)
+
+example: $(EXAMPLE)
 
 $(EXAMPLE): insertion_sort.cpp insertion_sort.h example.cpp
 	mkdir -p $(BUILD_DIR)
