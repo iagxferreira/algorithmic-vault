@@ -7,6 +7,9 @@ structures studied in this repository. Organize work by topic, for example:
 core/
   algorithms/
     sorting/
+      insertion_sort/
+        insertion_sort.h
+        insertion_sort.cpp
     graph/
   data-structures/
     trees/
