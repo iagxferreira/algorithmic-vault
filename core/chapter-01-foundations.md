@@ -2,7 +2,7 @@
 
 ## Exercises
 
-### Exercise: Real-world example requiring a convex hull
+### Exercise 1.1-1: Real-world example requiring a convex hull
 
 A marketing team could plot the locations of people who engaged with a social
 media campaign and compute their convex hull. The resulting boundary gives the
