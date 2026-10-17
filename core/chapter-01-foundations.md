@@ -70,3 +70,21 @@ A web search engine such as Google relies on algorithms to find pages relevant
 to a query, rank them, and order the results. These algorithms are central to
 the application because their quality directly affects how useful the search
 results are.
+
+### Exercise 1.2-2: Compare insertion sort and merge sort
+
+Insertion sort is faster when its step count is smaller:
+
+\[
+8n^2 < 64n \lg n.
+\]
+
+For positive \(n\), divide by \(8n\) to get \(n < 8\lg n\), where \(\lg\)
+is the base-2 logarithm. For integer input sizes, this holds for
+\(2 \le n \le 43\). Starting at \(n=44\), merge sort is faster. So insertion
+sort wins for some sizes above 8, but not for all sizes above 8.
+
+To verify the cutoff, consider \(8\lg n/n\), which must be greater than 1.
+This ratio decreases for \(n \ge 3\). At \(n=43\), it is about \(1.0095\),
+while at \(n=44\), it is about \(0.9926\). Thus the inequality stops holding
+between 43 and 44; check \(n=2\) separately, where it also holds.
