@@ -1,6 +1,6 @@
 # Book Notes
 
-Keep each book's notes in its own folder so sources and future ebooks stay
-separate. For example, the third edition of CLRS lives in
-[`introduction-to-algorithms/`](introduction-to-algorithms/README.md); add other
-books, such as *Grokking Algorithms*, in their own folders when you begin them.
+Keep each book and edition in its own folder. The current notes are for the
+third edition of CLRS in
+[`introduction-to-algorithms/`](introduction-to-algorithms/README.md). Add books
+such as *Grokking Algorithms* in a separate folder when you start them.

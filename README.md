@@ -1,9 +1,9 @@
 # Algorithm Studies
 
-A C++ competitive-programming workbook for learning algorithms and data
-structures through problem solving. The goal is to build sound reasoning,
-recognize common techniques, and write correct, efficient C++ solutions under
-contest constraints.
+A personal workspace for studying algorithms and data structures: implement
+them, work through books, and keep the material organized and easy to find.
+Solutions use C++20, with a focus on understanding techniques and their
+correctness, complexity, and edge cases.
 
 ## Start here
 
@@ -16,11 +16,10 @@ contest constraints.
 ## Study materials
 
 - [`core/`](./core/README.md) is for hands-on C++ algorithm and data-structure
-  implementations.
-- [`notes/`](./notes/README.md) organizes book notes by title: LaTeX sources for
-  ebook-ready content and Markdown for supporting project notes. Each book and
-  edition, such as CLRS (3rd edition) or *Grokking Algorithms*, gets its own
-  folder under `notes/books/`.
+  implementations, organized by topic and algorithm.
+- [`notes/`](./notes/README.md) keeps book notes separated by title and edition
+  for easy reference. CLRS notes are in LaTeX; general study notes can be in
+  Markdown.
 
 ## C++ baseline
 
