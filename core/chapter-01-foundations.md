@@ -28,3 +28,22 @@ searching, insertion, and deletion. Its limitation is that it can become
 unbalanced: operations may then take linear time. Keeping it balanced avoids
 that degradation, but adds implementation complexity and the cost of
 rebalancing after updates.
+
+### Exercise 1.1-4: Shortest path and traveling salesman
+
+Both problems can be represented as weighted graphs and seek a route with a
+small total edge weight. In a shortest-path problem, the route connects a
+specified start vertex to a specified destination; it does not have to visit
+every vertex or return to the start. In the traveling-salesman problem, the
+route must visit every vertex (city) and return to its starting point. Finding
+shortest paths between individual pairs of cities does not generally solve the
+traveling-salesman problem, because the tour must satisfy the visit-every-city
+constraint while minimizing its total length.
+
+Their computational difficulty also differs. Shortest-path problems have
+polynomial-time algorithms, while the traveling-salesman optimization problem
+is NP-hard; its decision version (whether a tour of at most a given length
+exists) is NP-complete. Brute force can solve either problem on small inputs,
+but checking every possible tour takes factorial time, which quickly becomes
+impractical. NP-completeness does not mean brute force is impossible; it means
+no polynomial-time algorithm is known for the decision problem.
