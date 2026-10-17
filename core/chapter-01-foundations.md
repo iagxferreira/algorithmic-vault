@@ -88,3 +88,19 @@ To verify the cutoff, consider \(8\lg n/n\), which must be greater than 1.
 This ratio decreases for \(n \ge 3\). At \(n=43\), it is about \(1.0095\),
 while at \(n=44\), it is about \(0.9926\). Thus the inequality stops holding
 between 43 and 44; check \(n=2\) separately, where it also holds.
+
+### Exercise 1.2-3: Compare quadratic and exponential running times
+
+We need the smallest integer \(n\) for which
+
+\[
+100n^2 < 2^n.
+\]
+
+Compare both expressions at the same input size. At \(n=14\), they are
+\(100(14)^2=19{,}600\) and \(2^{14}=16{,}384\), so the quadratic algorithm is
+still faster. At \(n=15\), they are \(100(15)^2=22{,}500\) and
+\(2^{15}=32{,}768\), so the exponential algorithm is faster. The ratio
+\(2^n/n^2\) increases for integers \(n \ge 3\), and at \(n=14\) it is still
+below 100; checking \(n=1,2\) separately, the smallest value that satisfies
+the inequality is therefore \(n=15\).
