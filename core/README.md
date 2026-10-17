@@ -1,7 +1,7 @@
 # Core Implementations
 
-Use this folder for hands-on C++ implementations of algorithms and data
-structures studied in this repository. Organize work by topic, for example:
+Use this folder for hands-on C++ implementations. Organize by topic, then keep
+each algorithm or data structure's related files together. For example:
 
 ```text
 core/
@@ -10,13 +10,16 @@ core/
       insertion_sort/
         insertion_sort.h
         insertion_sort.cpp
+        example.cpp
+        insertion_sort_test.cpp
+        Makefile
     graph/
   data-structures/
     trees/
     graphs/
 ```
 
-For each implementation, record its assumptions, correctness idea, complexity,
-and important edge cases. Keep book-specific explanations and exercise answers
-under [`notes/books/`](../notes/books/README.md); these implementation files
-should stand on their own and be tested against representative cases.
+The `insertion_sort/` folder is a starting example. Add a header, implementation,
+example, tests, or a Makefile when useful for the topic; this structure can stay
+small and grow as you need it. Keep book-specific explanations and exercise
+answers under [`notes/books/`](../notes/books/README.md).

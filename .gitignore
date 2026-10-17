@@ -1,37 +1,41 @@
-# Go build output
-*.test
-*.out
-vendor/
-
-# Legacy Java / Gradle build output
+# C++ build outputs
 build/
 out/
 bin/
 target/
-*.class
-*.jar
-!gradle/wrapper/gradle-wrapper.jar
+/solution
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
 
-# Legacy Gradle
-.gradle/
-gradle-app.setting
-.gradletasknamecache
+# LaTeX auxiliary and generated PDF files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+*.xdv
 
-# IDE
+# IDE settings
 .idea/
-*.iml
-*.ipr
-*.iws
 .vscode/
-.settings/
-.classpath
-.project
-nbproject/
+*.iml
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
-# Logs / temp
-*.log
+# Temporary files and dumps
 *.hprof
+*.swp
+*~
