@@ -1,4 +1,4 @@
-# Algorithm Studies
+# Algorithmic Vault
 
 A personal C++20 workspace for implementing algorithms, tracking study progress,
 and organizing book-based notes. The focus is on understanding techniques and
@@ -14,7 +14,7 @@ their correctness, complexity, and edge cases.
 
 ## Study materials
 
-- [`core/`](./core/README.md) is for hands-on C++ algorithm and data-structure
+- [`impl/`](./impl/README.md) is for hands-on C++ algorithm and data-structure
   implementations, organized by topic and algorithm.
 - [`notes/`](./notes/README.md) keeps book notes separated by title and edition
   for easy reference. CLRS notes are in LaTeX; general study notes can be in
@@ -40,13 +40,13 @@ make run
 The `Makefile` uses `g++` and C++20 by default. Override `CXX`, `SOURCE`, or
 `TARGET` when needed; pass runtime arguments with `ARGS`.
 
-For a focused implementation under `core/`, use the Makefile in that
+For a focused implementation under `impl/`, use the Makefile in that
 algorithm's folder when available. For example:
 
 ```sh
-make -C core/algorithms/sorting/insertion_sort build
-make -C core/algorithms/sorting/insertion_sort run
-make -C core/algorithms/sorting/insertion_sort test
+make -C impl/algorithms/sorting/insertion_sort build
+make -C impl/algorithms/sorting/insertion_sort run
+make -C impl/algorithms/sorting/insertion_sort test
 ```
 
 The test target is a place to check behavior as an implementation is developed;
