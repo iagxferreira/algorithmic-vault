@@ -9,3 +9,12 @@ media campaign and compute their convex hull. The resulting boundary gives the
 team a rough geographic zone around those users to target with a follow-up
 campaign. It is an approximation: the hull may include places where there are
 no engaged users.
+
+### Exercise 1.1-2: Other measures of efficiency
+
+Besides running time, an algorithm can be judged by how much memory and storage
+it uses, how much hardware it requires, and how much energy or network bandwidth
+it consumes. These resources have real costs: an algorithm that needs more RAM
+may require more expensive machines, while one that takes longer to run uses
+more computing time and can increase operating costs. The most important measure
+depends on the setting and its constraints.
