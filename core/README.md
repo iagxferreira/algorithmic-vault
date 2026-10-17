@@ -1,27 +1,22 @@
 # Core Algorithms
 
-Notes and exercise answers from *Introduction to Algorithms* (CLRS).
+Notes and exercise answers scoped to *Introduction to Algorithms* (CLRS).
 
 Use this folder for concepts, proofs, complexity analysis, and written exercise
-answers. Keep each chapter in its own Markdown file as you work through the
-book; for example, `chapter-02-getting-started.md`.
+answers from the book. Keep each chapter in its own LaTeX source file; for
+example, `chapter-02-getting-started.tex`.
 
-## Notes template
+Compile a chapter from the repository root with:
 
-```markdown
-# Chapter N: Chapter title
+```sh
+pdflatex core/chapter-01-foundations.tex
+```
 
-## Key ideas
+## Chapter template
 
-## Algorithms and pseudocode
+```latex
+\section{Chapter N: Chapter title}
 
-## Correctness / proof notes
-
-## Complexity
-
-## Exercises
-
-### Exercise N.N-N
-
-**Answer:**
+\subsection*{Exercise N.N-N: Exercise title}
+Answer.
 ```
