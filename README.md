@@ -1,9 +1,8 @@
 # Algorithm Studies
 
-A personal workspace for studying algorithms and data structures: implement
-them, work through books, and keep the material organized and easy to find.
-Solutions use C++20, with a focus on understanding techniques and their
-correctness, complexity, and edge cases.
+A personal C++20 workspace for implementing algorithms, tracking study progress,
+and organizing book-based notes. The focus is on understanding techniques and
+their correctness, complexity, and edge cases.
 
 ## Start here
 
@@ -40,6 +39,18 @@ make run
 
 The `Makefile` uses `g++` and C++20 by default. Override `CXX`, `SOURCE`, or
 `TARGET` when needed; pass runtime arguments with `ARGS`.
+
+For a focused implementation under `core/`, use the Makefile in that
+algorithm's folder when available. For example:
+
+```sh
+make -C core/algorithms/sorting/insertion_sort build
+make -C core/algorithms/sorting/insertion_sort run
+make -C core/algorithms/sorting/insertion_sort test
+```
+
+The test target is a place to check behavior as an implementation is developed;
+tests may fail until the algorithm is complete.
 
 ## Learning approach
 
