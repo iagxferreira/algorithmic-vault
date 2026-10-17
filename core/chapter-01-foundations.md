@@ -47,3 +47,19 @@ exists) is NP-complete. Brute force can solve either problem on small inputs,
 but checking every possible tour takes factorial time, which quickly becomes
 impractical. NP-completeness does not mean brute force is impossible; it means
 no polynomial-time algorithm is known for the decision problem.
+
+### Exercise 1.1-5: Exact and approximate solutions
+
+**Exact solution:** A mail carrier needs to deliver letters to every block in a
+small condominium and return to the mailroom before a strict cutoff. Model the
+blocks and walkways as a weighted graph, then find the shortest tour that visits
+every block and returns to the start. With only a few blocks, finding the exact
+best route can be practical and shows whether the deadline can be met.
+
+**Approximate solution:** In a very large condominium, there may be too many
+possible visiting orders to search for the exact shortest tour quickly. The
+carrier could instead follow a simple block-by-block order or repeatedly visit
+the nearest unvisited block. The route may involve some extra walking, but it is
+quick to plan and still gets every letter delivered. This is a useful trade-off
+when a near-best route is sufficient and timely planning matters more than
+proving the route is optimal.
