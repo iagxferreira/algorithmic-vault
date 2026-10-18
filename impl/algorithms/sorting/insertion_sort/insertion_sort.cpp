@@ -30,4 +30,17 @@ void insertion_sort_nonincreasing(std::vector<int> &values) {
   }
 }
 
+void insertion_sort_nonincreasing_from_end(std::vector<int> &values) {
+  for (std::size_t high = values.size(); high > 1; --high) {
+    const int key = values[high - 2];
+    std::size_t i = high - 1;
+
+    while (i < values.size() && values[i] > key) {
+      values[i - 1] = values[i];
+      ++i;
+    }
+    values[i - 1] = key;
+  }
+}
+
 } // namespace sorting
