@@ -4,17 +4,17 @@
 
 namespace sorting {
 
-void insertion_sort(std::vector<int>& values) {
-    for (std::size_t j = 1; j < values.size(); ++j) {
-        const int key = values[j];
-        std::size_t i = j;
+void insertion_sort(std::vector<int> &values) {
+  for (std::size_t low = 0; low < values.size(); low++) {
+    const int key = values[low];
+    std::size_t i = low;
 
-        while (i > 0 && values[i - 1] > key) {
-            values[i] = values[i - 1];
-            --i;
-        }
-        values[i] = key;
+    while (i > 0 && values[i - 1] > key) {
+      values[i] = values[i - 1];
+      --i;
     }
+    values[i] = key;
+  }
 }
 
-}  // namespace sorting
+} // namespace sorting
