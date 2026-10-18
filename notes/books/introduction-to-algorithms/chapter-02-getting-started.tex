@@ -43,3 +43,30 @@ The algorithm makes the same number of comparisons regardless of input order:
 \end{equation*}
 Therefore, both the best-case and worst-case running times are
 $\Theta(n^2)$.
+
+\section{Exercise 2.2-3: Linear search analysis}
+
+Assume the target is present and is equally likely to be at any of the $n$
+positions. If it is at position $k$, linear search checks $k$ elements. Thus,
+the average number of checks is
+\begin{equation*}
+    \frac{1}{n}\sum_{k=1}^{n} k
+    = \frac{n(n+1)}{2n}
+    = \frac{n+1}{2}.
+\end{equation*}
+
+The best case is one check when the target is first; the worst case is $n$
+checks when it is last (or absent). The average-case and worst-case running
+times are both $\Theta(n)$, while the best-case running time is $\Theta(1)$.
+With zero-based indexing, $(n-1)/2$ is the average index, so the average number
+of checks is one greater: $(n+1)/2$.
+
+\section{Exercise 2.2-4: Improve the best-case running time}
+
+Add a fast path that recognizes an easy special case and returns a correct
+answer early. For example, a sorting algorithm can first check whether its
+input is already sorted and return if it is. That check takes $\Theta(n)$ time,
+so the best case becomes $\Theta(n)$, while the fast path does not change a
+quadratic worst-case bound. This improves the best case specifically; it is
+different from redesigning an algorithm with a data structure to improve its
+general running time.
