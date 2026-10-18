@@ -1,0 +1,45 @@
+\chapter{Getting Started}
+
+\section{Exercise 2.2-1: Express a function using $\Theta$-notation}
+
+For
+\begin{equation*}
+    f(n) = \frac{n^3}{1000} - 100n^2 - 100n + 3,
+\end{equation*}
+the cubic term dominates the lower-order terms as $n$ grows. In particular,
+\begin{equation*}
+    \lim_{n \to \infty} \frac{f(n)}{n^3} = \frac{1}{1000} > 0.
+\end{equation*}
+Therefore, $f(n) = \Theta(n^3)$. The coefficient $1/1000$ is ignored when
+expressing asymptotic growth; it is not changed to $1/10$ in the original
+function.
+
+\section{Exercise 2.2-2: Selection sort}
+
+\paragraph{Loop invariant.}
+At the start of outer-loop iteration $i$, the prefix $A[1 \ldots i-1]$
+contains the $i-1$ smallest elements in nondecreasing order, each in its final
+position.
+
+\paragraph{Initialization.}
+Before the first iteration, $i=1$ and the prefix is empty. It contains the
+zero smallest elements in sorted order, so the invariant holds.
+
+\paragraph{Maintenance.}
+The algorithm finds the smallest element in $A[i \ldots n]$ and exchanges it
+with $A[i]$. This places the next-smallest element in its final position after
+the already sorted prefix, so the invariant holds for the next iteration.
+
+\paragraph{Termination.}
+After the first $n-1$ iterations, the prefix contains the $n-1$ smallest
+elements in sorted order. The one remaining element must be the largest, so the
+entire array is sorted. A pass for the $n$th element is unnecessary because no
+other element remains to compare or exchange with it.
+
+\paragraph{Running time.}
+The algorithm makes the same number of comparisons regardless of input order:
+\begin{equation*}
+    (n-1) + (n-2) + \cdots + 1 = \frac{n(n-1)}{2}.
+\end{equation*}
+Therefore, both the best-case and worst-case running times are
+$\Theta(n^2)$.
