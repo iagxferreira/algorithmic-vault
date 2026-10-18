@@ -14,6 +14,14 @@ impl/
         insertion_sort_test.cpp
         Makefile
     graph/
+  exercises/
+    clrs/
+      binary_addition/
+        binary_addition.h
+        binary_addition.cpp
+        example.cpp
+        binary_addition_test.cpp
+        Makefile
   data-structures/
     .gitkeep
   utils/
