@@ -5,7 +5,7 @@ complete when you can recognize it in unfamiliar problems, explain why the
 approach works, analyze its complexity, and solve several variations.
 
 Use this roadmap to track algorithm topics. Keep book-specific reading notes in
-`notes/books/` and implementations in `impl/`.
+`notes/booknotes/` and implementations in `impl/`.
 
 ## 1. C++ and problem-solving fundamentals
 
