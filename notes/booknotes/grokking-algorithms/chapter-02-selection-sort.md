@@ -43,3 +43,40 @@ end and removing from the beginning in $O(1)$ time. A plain array may need to
 shift all remaining orders when removing the first item; a circular buffer is
 another efficient queue implementation. Among the exercise's array-versus-list
 choices, a linked list is the intended answer.
+
+## Exercise 2.3: Choosing storage for binary search
+
+**Question.** A service keeps a list of usernames and frequently uses binary
+search to look up users. Binary search needs random access to the middle of
+the list. Should the usernames be stored in an array or a linked list?
+
+**Answer.** Store them in an **array**. Arrays provide constant-time random
+access, so binary search can inspect the middle element in $O(1)$ and complete
+the lookup in $O(\log n)$ time. A linked list has no constant-time access to
+its middle: reaching that node requires traversing the list, making the search
+$O(n)$ overall.
+
+A balanced search tree could be a reasonable alternative if the requirements
+called for a different search structure, especially with frequent updates.
+However, it is not one of the two choices in this exercise; for binary search,
+the array's random access is the key requirement.
+
+## Exercise 2.4: Frequent logins and user sign-ups
+
+**Question.** People sign up for Facebook frequently too. Suppose you choose
+an array to store the user list. What is the disadvantage of an array for
+insertions? In particular, if binary search is used to look up logins, what
+happens when a new user is added?
+
+**Answer.** Binary search requires the array to stay sorted by login name. To
+add a new user, find the correct position and shift later entries to make room.
+In the worst case, this takes $O(n)$ time. A dynamic array may also occasionally
+need to allocate a larger block and copy its entries. The benefit is that
+logins remain fast at $O(\log n)$; if logins are much more frequent than
+sign-ups, paying more for occasional insertions may be a reasonable trade-off.
+
+A balanced search tree is an alternative when both lookup and insertion need
+$O(\log n)$ time while preserving order. A hash map keyed by email can provide
+$O(1)$ average-time lookup and insertion, but does not keep entries ordered.
+For authentication, use the email to find the account and verify the submitted
+password against a secure password hash; never store passwords in plaintext.
