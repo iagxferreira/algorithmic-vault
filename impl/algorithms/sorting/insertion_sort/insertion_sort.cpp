@@ -17,4 +17,8 @@ void insertion_sort(std::vector<int> &values) {
   }
 }
 
+void insertion_sort_nonincreasing(std::vector<int> &) {
+  // TODO: Implement exercise 2.1-2.
+}
+
 } // namespace sorting

@@ -16,6 +16,15 @@ void check_sort(std::string_view test_name,
     std::cout << test_name << " passed!" << std::endl;
 }
 
+void check_nonincreasing_sort(std::string_view test_name,
+                              const std::vector<int>& input,
+                              const std::vector<int>& expected) {
+    std::vector<int> values = input;
+    sorting::insertion_sort_nonincreasing(values);
+    assert(values == expected);
+    std::cout << test_name << " passed!" << std::endl;
+}
+
 }  // namespace
 
 int main() {
@@ -25,4 +34,8 @@ int main() {
     check_sort("reverse order", {4, 3, 2, 1}, {1, 2, 3, 4});
     check_sort("duplicate values", {3, 1, 2, 1}, {1, 1, 2, 3});
     check_sort("negative values", {0, -3, 8, -1}, {-3, -1, 0, 8});
+
+    check_nonincreasing_sort("nonincreasing order", {1, 4, 2, 3}, {4, 3, 2, 1});
+    check_nonincreasing_sort("nonincreasing duplicates", {3, 1, 2, 1}, {3, 2, 1, 1});
+    check_nonincreasing_sort("nonincreasing negative values", {0, -3, 8, -1}, {8, 0, -1, -3});
 }
