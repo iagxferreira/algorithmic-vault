@@ -18,4 +18,8 @@ struct Box {
 const Box* iterative_depth_first_search(const Box& main_box,
                                        const BoxItem& target);
 
+// Returns the box containing target, or nullptr when target is not present.
+const Box* recursive_depth_first_search(const Box& main_box,
+                                        const BoxItem& target);
+
 }  // namespace searching
