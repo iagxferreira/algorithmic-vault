@@ -3,6 +3,10 @@
 version = 4
 
 [[package]]
+name = "binary_search"
+version = "0.1.0"
+
+[[package]]
 name = "factorial"
 version = "0.1.0"
 
