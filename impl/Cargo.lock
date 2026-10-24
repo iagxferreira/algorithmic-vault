@@ -29,3 +29,7 @@ version = "0.1.0"
 [[package]]
 name = "minimum_search"
 version = "0.1.0"
+
+[[package]]
+name = "quick_sort"
+version = "0.1.0"
