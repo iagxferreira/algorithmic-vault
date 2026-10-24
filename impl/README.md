@@ -56,5 +56,3 @@ Keep book-specific explanations and exercise answers under
 needed yet; a crate stays self-contained and only grows a dependency on a
 sibling crate when several algorithms genuinely share code.
 
-Legacy C++ structure (folder per algorithm with `.h`/`.cpp`/`Makefile`) is
-described by each topic's README until it is removed.
