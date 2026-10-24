@@ -1,5 +1,5 @@
 [workspace]
 resolver = "2"
 # One member per algorithm crate; grows as topics are ported from C++.
-members = []
+members = ["algorithms/recursion/factorial"]
 
