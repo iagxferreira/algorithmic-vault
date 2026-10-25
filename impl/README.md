@@ -2,8 +2,7 @@
 
 This folder is a Cargo workspace for hands-on Rust implementations. Each
 algorithm exercise is its own crate, so exercises stay independent and build
-fast. The older C++ sources and Makefiles are legacy reference and are being
-retired as each topic is ported.
+fast.
 
 ## Layout
 
@@ -16,7 +15,7 @@ impl/
         Cargo.toml
         src/
           lib.rs        # the algorithm and its unit tests
-          main.rs       # example program, mirrors the C++ example
+          main.rs       # example program
     graph/
   exercises/
     clrs/
