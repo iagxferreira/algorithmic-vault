@@ -7,9 +7,8 @@ to handle duplicate values without unproductive recursive calls.
 This version allocates temporary vectors rather than sorting in place. Its
 average running time is `O(n log n)` and its worst case is `O(n^2)`.
 
-Run the example and the tests with:
+Build the example with:
 
 ```sh
-cargo run
-cargo test
+make build
 ```

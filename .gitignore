@@ -1,9 +1,15 @@
-# Build outputs
+# C++ build outputs
 build/
 out/
 bin/
 target/
 /solution
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
 
 # LaTeX auxiliary and generated PDF files
 *.aux
