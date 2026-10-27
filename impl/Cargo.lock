@@ -15,6 +15,10 @@ name = "depth_first_search"
 version = "0.1.0"
 
 [[package]]
+name = "doubly_linked_list"
+version = "0.1.0"
+
+[[package]]
 name = "factorial"
 version = "0.1.0"
 
@@ -40,4 +44,8 @@ version = "0.1.0"
 
 [[package]]
 name = "selection_sort"
+version = "0.1.0"
+
+[[package]]
+name = "singly_linked_list"
 version = "0.1.0"
