@@ -1,59 +1,55 @@
 # Algorithmic Vault
 
-A personal C++20 workspace for implementing algorithms, tracking study progress,
+A personal Rust workspace for implementing algorithms, tracking study progress,
 and organizing book-based notes. The focus is on understanding techniques and
-their correctness, complexity, and edge cases.
+their correctness, complexity, and edge cases — and on becoming fluent in
+idiomatic Rust along the way.
 
 ## Start here
 
 1. Follow [`ROADMAP.md`](./ROADMAP.md) and choose a topic.
 2. Study the technique, including its invariant, complexity, and edge cases.
 3. Solve representative problems and record the reusable idea and pitfalls.
-4. Compile with warnings and test boundary cases before considering a topic
-   complete.
+4. Build cleanly with `clippy` and `rustfmt`, cover boundary cases with tests,
+   and run them before considering a topic complete.
 
 ## Study materials
 
-- [`impl/`](./impl/README.md) is for hands-on C++ algorithm and data-structure
-  implementations, organized by topic and algorithm.
+- [`impl/`](./impl/README.md) is for hands-on Rust algorithm and data-structure
+  implementations, organized by topic and algorithm. New topics become their
+  own crates in the workspace.
 - [`notes/`](./notes/README.md) keeps book notes separated by title and edition
   for easy reference. CLRS notes are in LaTeX; general study notes can be in
   Markdown.
 
-## C++ baseline
+## Rust baseline
 
-- Use **C++20** unless a problem or judge requires another standard.
+- Track the latest **stable** Rust. Update the toolchain regularly and let
+  ownership-aware APIs, iterators, and `Option`/`Result` lead the design.
+- Use **Cargo** per crate or one workspace crate with one module per algorithm;
+  prefer `cargo` layout (`src/`, `tests/`) over ad-hoc build files.
 - Prefer standard-library containers and algorithms; implement core structures
   from scratch when studying their internals.
-- Make complexity and integer bounds explicit. Use 64-bit integers when the
-  constraints require them, and avoid overflow in intermediate calculations.
-- Keep solutions self-contained and suitable for online judges: standard input
-  and output, no external dependencies, and no reliance on local files.
+- Make complexity and integer bounds explicit. Use checked/wrapping arithmetic
+  consciously, reach for `u64`/`i64` when constraints require them, and let
+  `debug_assert!` and overflow checks catch mistakes during development.
+- Keep solutions self-contained and suitable for online judges: read from
+  standard input, write to standard output, no external crates unless a judge
+  allows them.
 
-Put the current solution in `main.cpp`, then build and run it with:
-
-```sh
-make build
-make run
-```
-
-The `Makefile` uses `g++` and C++20 by default. Override `CXX`, `SOURCE`, or
-`TARGET` when needed; pass runtime arguments with `ARGS`.
-
-For a focused implementation under `impl/`, use the Makefile in that
-algorithm's folder when available. For example:
+Build, test, and lint a focused implementation from its own folder:
 
 ```sh
-make -C impl/algorithms/sorting/insertion_sort build
-make -C impl/algorithms/sorting/insertion_sort run
-make -C impl/algorithms/sorting/insertion_sort test
+cargo build
+cargo test
+cargo fmt
+cargo clippy
 ```
-
-The test target is a place to check behavior as an implementation is developed;
-tests may fail until the algorithm is complete.
 
 ## Learning approach
 
 Prioritize problem-solving patterns over accumulating code snippets. For each
 topic, understand when it applies, prove why it works, analyze time and space,
-and practice variations. Keep reusable templates small, tested, and justified.
+and practice variations. Keep reusable templates small, tested, and justified —
+and treat every implementation as a chance to deepen ownership, borrowing, and
+lifetimes intuition.

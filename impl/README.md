@@ -1,37 +1,57 @@
 # Implementations
 
-Use this folder for hands-on C++ implementations. Organize by topic, then keep
-each algorithm or data structure's related files together. For example:
+This folder is a Cargo workspace for hands-on Rust implementations. Each
+algorithm exercise is its own crate, so exercises stay independent and build
+fast.
+
+## Layout
 
 ```text
 impl/
+  Cargo.toml
   algorithms/
     sorting/
       insertion_sort/
-        insertion_sort.h
-        insertion_sort.cpp
-        example.cpp
-        insertion_sort_test.cpp
-        Makefile
+        Cargo.toml
+        src/
+          lib.rs        # the algorithm and its unit tests
+          main.rs       # example program
     graph/
   exercises/
     clrs/
       binary_addition/
-        binary_addition.h
-        binary_addition.cpp
-        example.cpp
-        binary_addition_test.cpp
-        Makefile
+        Cargo.toml
+        src/
+          lib.rs
+          main.rs
   data-structures/
-    .gitkeep
-  utils/
-    print_vector.h
 ```
 
-The `insertion_sort/` folder is a starting example. Add a header, implementation,
-example, tests, or a Makefile when useful for the topic; this structure can stay
-small and grow as you need it. Keep book-specific explanations and exercise
-answers under [`notes/booknotes/`](../notes/booknotes/README.md).
+Each crate follows the same shape:
 
-Put small helpers shared by examples or implementations in `utils/` rather than
-duplicating them in each algorithm folder.
+- `Cargo.toml` declares the crate with the folder's name.
+- `src/lib.rs` holds the exported algorithm and its `#[cfg(test)]` unit tests,
+  so `cargo test` from anywhere in the workspace exercises it.
+- `src/main.rs` holds the example program: `cargo run` inside the crate folder.
+
+Build, test, and lint a focused implementation from its own folder:
+
+```sh
+cargo build
+cargo test
+cargo fmt
+cargo clippy
+```
+
+Or work across the whole workspace from `impl/`:
+
+```sh
+cargo test --workspace
+cargo clippy --workspace --all-targets
+```
+
+Keep book-specific explanations and exercise answers under
+[`notes/booknotes/`](../notes/booknotes/README.md). Shared helpers are not
+needed yet; a crate stays self-contained and only grows a dependency on a
+sibling crate when several algorithms genuinely share code.
+

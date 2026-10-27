@@ -1,14 +1,15 @@
-# Recursive List Operations Scaffold
+# Recursive List Operations
 
-Implement the three recursive functions in `list_recursion.cpp`:
+The `list_recursion` crate implements three recursive functions:
 
 - Exercise 4.1: sum the values (`0` for an empty list).
 - Exercise 4.2: count the values (`0` for an empty list).
-- Exercise 4.3: find the maximum (`std::nullopt` for an empty list).
+- Exercise 4.3: find the maximum (`None` for an empty list).
 
-The tests describe expected behavior and will fail until the TODOs are
-implemented. Build the example with:
+The tests in `src/lib.rs` describe the expected behavior.
+
+Build and run the example with:
 
 ```sh
-make build
+cargo run
 ```

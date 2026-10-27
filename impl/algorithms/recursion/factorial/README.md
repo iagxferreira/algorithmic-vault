@@ -2,14 +2,15 @@
 
 This folder implements factorial with direct recursion, iteration, and
 recursion using a memoization map. Inputs must be at most 20 so the result fits
-in `std::uint64_t`.
+in `u64`.
 
 Memoization does not improve the asymptotic work of one factorial calculation,
 because its recurrence has no branching or overlapping subproblems. Reusing the
 same map can make repeated requests for an already-computed value `O(1)`.
 
-Build the example with:
+Run the example and the tests with:
 
 ```sh
-make build
+cargo run
+cargo test
 ```
