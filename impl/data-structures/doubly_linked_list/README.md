@@ -1,22 +1,33 @@
 # Doubly linked list
 
-A doubly linked list with a sentinel node, the representation from CLRS
-section 10.2: a permanent valueless node sits at the boundary, and the list is
-wired circularly around it. The sentinel's `next` handle is the front of the
-list, its `prev` handle is the back, and an empty list is just a sentinel
-pointing at itself — which removes every empty-list branch from the insert
-and remove routines.
+Every node is its own heap allocation, pointed at from both directions — and
+that is what makes the doubly list a different beast in Rust than the singly
+one: a node cannot be *owned* by its predecessor like a `Box` chain and
+simultaneously be reachable through `prev`. The safe translation of the
+textbook two-pointer list is shared ownership with interior mutability:
 
-Key properties:
+- `next: Option<Rc<RefCell<Node<T>>>>` — the forward link is strong
+  (ref-counted).
+- `prev: Option<Weak<RefCell<Node<T>>>>` — the backward link is an uncounted
+  `Weak`, which keeps the strong graph a single forward chain that frees
+  completely when the list drops. (Make `prev` strong and most of the list
+  leaks on drop.)
+- The list also holds a strong handle to the current tail, which is why
+  `push_back`/`pop_back`/`back` are `O(1)` here and `O(n)` in the singly
+  list.
 
-- All four edge operations (`push_front`, `push_back`, `pop_front`,
-  `pop_back`) run in `O(1)`, unlike the singly linked list where `push_back`
-  must walk the chain.
-- `reverse` swaps each node's `next` and `prev` handles in place:
-  `O(n)` time, `O(1)` extra space.
-- Like its sibling `singly_linked_list`, nodes live in an arena (`Vec` +
-  `usize` handles) and popped nodes become tombstones rather than compacting
-  the storage.
+Costs of sharing, visible at the seams:
+
+- neighbor updates go through `borrow()`/`borrow_mut()` guards,
+- iteration must clone values (`T: Clone`), because an outstanding `&T`
+  through a `RefCell` would block the next step,
+- in-place `reverse` is postponed on purpose: swapping `next`/`prev` across
+  `RefCell` guards is gnarly to do safely — a good future exercise with
+  `unsafe` or an arena revisit.
+
+For contrast: the standard library's own `collections::LinkedList` is a
+doubly list built on `unsafe` pointers, precisely to avoid these runtime
+costs while keeping the same shape.
 
 Run the example and the tests with:
 

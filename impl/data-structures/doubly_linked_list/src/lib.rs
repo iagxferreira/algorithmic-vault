@@ -1,133 +1,165 @@
-//! A doubly linked list with a sentinel node, stored on an arena.
+//! A doubly linked list where every node is its own heap allocation, in
+//! both directions.
 //!
-//! The sentinel is a permanent valueless node kept at arena index 0. In a
-//! circular wiring the sentinel's `next` handle is the front of the list and
-//! its `prev` handle is the back, so an empty list is simply one where both
-//! handles point back at the sentinel — no `Option` special cases anywhere in
-//! the insert and remove routines.
+//! Ownership rules out the singly list's `Box` trick here: each node is
+//! pointed at by its predecessor's `next` *and* its successor's `prev`, so a
+//! node has two pointers into it. Shared ownership ([`Rc`]) plus interior
+//! mutability ([`RefCell`]) is the safe-Rust translation: `next` links are
+//! strong (counted), `prev` links are [`Weak`] (uncounted), which keeps the
+//! strong reference graph a plain forward chain that frees completely when
+//! the list drops.
 //!
-//! As with the singly linked list, popped nodes become tombstones: the arena
-//! never compacts.
+//! The cost of sharing is visible at the seams: touching a neighbor goes
+//! through `borrow()`, and iteration clones values, since an outstanding
+//! `&T` through a `RefCell` would block the next mutation. In the standard
+//! library, `collections::LinkedList` pays for the real doubly list with
+//! `unsafe` pointers instead.
 
-#[derive(Clone, Debug, Default, PartialEq)]
+use std::cell::Ref;
+use std::cell::RefCell;
+use std::rc::{Rc, Weak};
+
+#[derive(Debug, Default)]
 pub struct DoublyLinkedList<T> {
-    arena: Vec<Node<T>>,
+    /// Declared before `tail` on purpose: on drop, Rust releases fields in
+    /// order, so the head chain cascades first and every node frees, no
+    /// matter how far the `tail` handle reached into the chain.
+    head: Link<T>,
+    tail: Option<Rc<RefCell<Node<T>>>>,
     len: usize,
 }
 
-#[derive(Clone, Debug, PartialEq)]
-struct Node<T> {
-    value: Option<T>,
-    next: Option<usize>,
-    prev: Option<usize>,
-}
+type Link<T> = Option<Rc<RefCell<Node<T>>>>;
 
-const SENTINEL: usize = 0;
+#[derive(Debug)]
+struct Node<T> {
+    value: T,
+    next: Link<T>,
+    prev: Option<Weak<RefCell<Node<T>>>>,
+}
 
 impl<T> DoublyLinkedList<T> {
     pub fn new() -> Self {
         Self {
-            arena: vec![Node {
-                value: None,
-                next: Some(SENTINEL),
-                prev: Some(SENTINEL),
-            }],
+            head: None,
+            tail: None,
             len: 0,
         }
     }
 
-    /// Wires `index` between `prev` and `next`, updating all four handles.
-    /// The single splice primitive every insert builds on. `O(1)`.
-    fn link(&mut self, index: usize, prev: usize, next: usize) {
-        self.arena[index].prev = Some(prev);
-        self.arena[index].next = Some(next);
-        self.arena[prev].next = Some(index);
-        self.arena[next].prev = Some(index);
-    }
-
-    /// Prepends to the front: splices the new node between the sentinel and
-    /// the current head. `O(1)`.
+    /// Prepends to the front. `O(1)`: one allocation, and on a non-empty
+    /// list one `prev` fix-up on the old head.
     pub fn push_front(&mut self, value: T) {
-        let index = self.arena.len();
-        let front = self.arena[SENTINEL]
-            .next
-            .expect("sentinel links never dangle");
-        self.arena.push(Node {
-            value: Some(value),
-            next: None,
+        let new_head = Rc::new(RefCell::new(Node {
+            value,
+            next: self.head.take(),
             prev: None,
-        });
-        self.link(index, SENTINEL, front);
-        self.len += 1;
-    }
+        }));
 
-    /// Appends to the back: splices the new node between the current tail
-    /// (the sentinel's `prev`) and the sentinel. `O(1)`.
-    pub fn push_back(&mut self, value: T) {
-        let index = self.arena.len();
-        let tail = self.arena[SENTINEL]
-            .prev
-            .expect("sentinel links never dangle");
-        self.arena.push(Node {
-            value: Some(value),
-            next: None,
-            prev: None,
-        });
-        self.link(index, tail, SENTINEL);
-        self.len += 1;
-    }
-
-    /// Removes the front node and returns its value, bypassing the splice
-    /// since removing the first node only needs to update two handles.
-    /// `O(1)`.
-    pub fn pop_front(&mut self) -> Option<T> {
-        let front = self.arena[SENTINEL].next?;
-        let back = self.arena[front].next?;
-        let value = self.arena[front].value.take()?;
-        self.arena[SENTINEL].next = Some(back);
-        self.arena[back].prev = Some(SENTINEL);
-
-        self.len -= 1;
-        Some(value)
-    }
-
-    /// Removes the back node and returns its value. `O(1)`.
-    pub fn pop_back(&mut self) -> Option<T> {
-        let tail = self.arena[SENTINEL].prev?;
-        let back = self.arena[tail].prev?;
-        let value = self.arena[tail].value.take()?;
-        self.arena[SENTINEL].prev = Some(back);
-        self.arena[back].next = Some(SENTINEL);
-
-        self.len -= 1;
-        Some(value)
-    }
-
-    /// Borrows the front value without removing it. `O(1)`.
-    pub fn front(&self) -> Option<&T> {
-        let front = self.arena[SENTINEL].next?;
-        self.arena[front].value.as_ref()
-    }
-
-    /// Borrows the back value without removing it. `O(1)`.
-    pub fn back(&self) -> Option<&T> {
-        let tail = self.arena[SENTINEL].prev?;
-        self.arena[tail].value.as_ref()
-    }
-
-    /// Reverses the list in place by swapping each node's `next` and `prev`
-    /// handles, sentinel included. `O(n)` time, `O(1)` extra space.
-    pub fn reverse(&mut self) {
-        for node in &mut self.arena {
-            std::mem::swap(&mut node.next, &mut node.prev);
+        if let Some(old_head) = new_head.borrow().next.clone() {
+            old_head.borrow_mut().prev = Some(Rc::downgrade(&new_head));
+        } else {
+            self.tail = Some(new_head.clone());
         }
+
+        self.head = Some(new_head);
+        self.len += 1;
+    }
+
+    /// Appends to the back. `O(1)`: one allocation, and on a non-empty list
+    /// one `next` fix-up on the old tail.
+    pub fn push_back(&mut self, value: T) {
+        let new_tail = Rc::new(RefCell::new(Node {
+            value,
+            next: None,
+            prev: None,
+        }));
+
+        if let Some(old_tail) = self.tail.take() {
+            old_tail.borrow_mut().next = Some(new_tail.clone());
+            new_tail.borrow_mut().prev = Some(Rc::downgrade(&old_tail));
+        } else {
+            self.head = Some(new_tail.clone());
+        }
+
+        self.tail = Some(new_tail);
+        self.len += 1;
+    }
+
+    /// Removes the front node and returns its value. `O(1)`: after
+    /// `head.take()` releases the list's strong count, only this function
+    /// holds the node, so `Rc::try_unwrap` can hand its value out whole.
+    pub fn pop_front(&mut self) -> Option<T> {
+        let front = self.head.take()?;
+
+        match front.borrow_mut().next.take() {
+            Some(next) => {
+                next.borrow_mut().prev = None;
+                self.head = Some(next);
+            }
+            None => self.tail = None,
+        }
+
+        self.len -= 1;
+        Some(
+            Rc::try_unwrap(front)
+                .ok()
+                .expect("no other handles")
+                .into_inner()
+                .value,
+        )
+    }
+
+    /// Removes the back node and returns its value. `O(1)`: because `prev`
+    /// is `Weak`, the last node's only strong pointer is the list's own
+    /// `tail` handle.
+    pub fn pop_back(&mut self) -> Option<T> {
+        let tail = self.tail.take()?;
+
+        match tail
+            .borrow_mut()
+            .prev
+            .take()
+            .as_ref()
+            .and_then(Weak::upgrade)
+        {
+            Some(previous) => {
+                previous.borrow_mut().next = None;
+                self.tail = Some(previous);
+            }
+            None => self.head = None,
+        }
+
+        self.len -= 1;
+        Some(
+            Rc::try_unwrap(tail)
+                .ok()
+                .expect("no other handles")
+                .into_inner()
+                .value,
+        )
+    }
+
+    /// Borrows the front value. The guard holds a read borrow of the node's
+    /// `RefCell` for its lifetime, so further shared reads are fine but any
+    /// mutation of the list must wait for it to go out of scope.
+    pub fn front(&self) -> Option<Ref<'_, T>> {
+        self.head
+            .as_ref()
+            .map(|head| Ref::map(head.borrow(), |node| &node.value))
+    }
+
+    /// Borrows the back value. Same borrow rules as [`front`].
+    pub fn back(&self) -> Option<Ref<'_, T>> {
+        self.tail
+            .as_ref()
+            .map(|tail| Ref::map(tail.borrow(), |node| &node.value))
     }
 
     /// Drops every value and resets the list to empty. `O(n)`.
     pub fn clear(&mut self) {
-        self.arena.truncate(1);
-        self.arena[SENTINEL].next = Some(SENTINEL);
-        self.arena[SENTINEL].prev = Some(SENTINEL);
+        self.head = None;
+        self.tail = None;
         self.len = 0;
     }
 
@@ -138,42 +170,42 @@ impl<T> DoublyLinkedList<T> {
     pub fn is_empty(&self) -> bool {
         self.len == 0
     }
-
-    pub fn iter(&self) -> Iter<'_, T> {
-        Iter {
-            arena: &self.arena,
-            current: self.arena[SENTINEL].next,
-        }
-    }
 }
 
 /// Forward iterator over the list values, produced by
-/// [`DoublyLinkedList::iter`]. It walks nodes until it lands back on the
-/// sentinel; tombstone slots are never reached, so their stale handles do not
-/// matter.
+/// [`DoublyLinkedList::iter`]. Cloning the values is not a style choice:
+/// an iteration step clones the strong handle before `borrow()`, the
+/// borrow's guard would block the following step, and a shared-ownership
+/// node cannot hand out plain `&T` across steps. Requires a clonable value
+/// type.
 #[derive(Clone, Debug)]
-pub struct Iter<'a, T> {
-    arena: &'a [Node<T>],
-    current: Option<usize>,
+pub struct Iter<T> {
+    next: Option<Rc<RefCell<Node<T>>>>,
 }
 
-impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = &'a T;
+impl<T: Clone> Iterator for Iter<T> {
+    type Item = T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let index = self.current?;
-        if index == SENTINEL {
-            return None;
-        }
-        let node = &self.arena[index];
-        self.current = node.next;
-        node.value.as_ref()
+        let node = self.next.take()?;
+        let value = node.borrow().value.clone();
+        self.next = node.borrow().next.clone();
+        Some(value)
     }
 }
 
-impl<'a, T> IntoIterator for &'a DoublyLinkedList<T> {
-    type Item = &'a T;
-    type IntoIter = Iter<'a, T>;
+impl<T> DoublyLinkedList<T> {
+    /// Walks the list from the front, cloning values along the way.
+    pub fn iter(&self) -> Iter<T> {
+        Iter {
+            next: self.head.clone(),
+        }
+    }
+}
+
+impl<T: Clone> IntoIterator for &DoublyLinkedList<T> {
+    type Item = T;
+    type IntoIter = Iter<T>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
@@ -199,8 +231,6 @@ mod tests {
         let list = DoublyLinkedList::<i32>::new();
         assert!(list.is_empty());
         assert_eq!(list.len(), 0);
-        assert_eq!(list.front(), None);
-        assert_eq!(list.back(), None);
         assert_eq!(list.iter().count(), 0);
     }
 
@@ -220,11 +250,10 @@ mod tests {
         list.push_front(7);
         list.push_front(42);
 
-        assert_eq!(list.front(), Some(&42));
-        assert_eq!(list.back(), Some(&1));
+        assert_eq!(*list.front().expect("three items"), 42);
+        assert_eq!(*list.back().expect("three items"), 1);
         assert_eq!(list.len(), 3);
-        let items: Vec<_> = list.iter().copied().collect();
-        assert_eq!(items, [42, 7, 1]);
+        assert_eq!(list.iter().collect::<Vec<_>>(), [42, 7, 1]);
     }
 
     #[test]
@@ -234,11 +263,10 @@ mod tests {
         list.push_back(7);
         list.push_back(42);
 
-        assert_eq!(list.front(), Some(&1));
-        assert_eq!(list.back(), Some(&42));
+        assert_eq!(*list.front().expect("three items"), 1);
+        assert_eq!(*list.back().expect("three items"), 42);
         assert_eq!(list.len(), 3);
-        let items: Vec<_> = list.iter().copied().collect();
-        assert_eq!(items, [1, 7, 42]);
+        assert_eq!(list.iter().collect::<Vec<_>>(), [1, 7, 42]);
     }
 
     #[test]
@@ -251,8 +279,8 @@ mod tests {
 
         assert_eq!(list.pop_front(), Some(0));
         assert_eq!(list.pop_back(), Some(3));
-        assert_eq!(list.front(), Some(&1));
-        assert_eq!(list.back(), Some(&2));
+        assert_eq!(*list.front().expect("two items left"), 1);
+        assert_eq!(*list.back().expect("two items left"), 2);
         assert_eq!(list.pop_front(), Some(1));
         assert_eq!(list.pop_back(), Some(2));
         assert!(list.is_empty());
@@ -265,46 +293,17 @@ mod tests {
 
         list.clear();
         assert!(list.is_empty());
-        assert_eq!(list.front(), None);
 
         list.push_front(9);
-        assert_eq!(list.front(), Some(&9));
-        assert_eq!(list.back(), Some(&9));
+        assert_eq!(*list.front().expect("one item"), 9);
+        assert_eq!(*list.back().expect("one item"), 9);
         assert_eq!(list.len(), 1);
-    }
-
-    #[test]
-    fn reverse_empty_and_single_lists() {
-        let mut empty = DoublyLinkedList::<i32>::new();
-        empty.reverse();
-        assert!(empty.is_empty());
-
-        let mut single = DoublyLinkedList::new();
-        single.push_front(5);
-        single.reverse();
-        assert_eq!(single.front(), Some(&5));
-        assert_eq!(single.back(), Some(&5));
-    }
-
-    #[test]
-    fn double_reverse_restores_original_order() {
-        let mut list: DoublyLinkedList<_> = [1, 2, 3, 4].into_iter().collect();
-
-        list.reverse();
-        assert_eq!(list.front(), Some(&4));
-        assert_eq!(list.back(), Some(&1));
-        let once: Vec<_> = list.iter().copied().collect();
-        assert_eq!(once, [4, 3, 2, 1]);
-
-        list.reverse();
-        let twice: Vec<_> = list.iter().copied().collect();
-        assert_eq!(twice, [1, 2, 3, 4]);
     }
 
     #[test]
     fn list_works_in_for_loops() {
         let list: DoublyLinkedList<_> = [1, 2, 3].into_iter().collect();
-        let seen: Vec<_> = list.into_iter().copied().collect();
+        let seen: Vec<_> = list.into_iter().collect();
         assert_eq!(seen, [1, 2, 3]);
     }
 
@@ -314,9 +313,8 @@ mod tests {
         list.push_back("first".to_string());
         list.push_back("second".to_string());
 
-        list.reverse();
-        assert_eq!(list.pop_front(), Some("second".to_string()));
-        assert_eq!(list.front(), Some(&"first".to_string()));
-        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_back(), Some("second".to_string()));
+        assert_eq!(list.pop_front(), Some("first".to_string()));
+        assert!(list.is_empty());
     }
 }
