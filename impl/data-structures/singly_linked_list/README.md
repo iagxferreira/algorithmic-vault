@@ -1,19 +1,23 @@
 # Singly linked list
 
-A linked list implemented with the arena pattern: every node is stored in a
-`Vec` and referenced by a `usize` handle instead of a pointer. This gives the
-list pointer-like navigation without the shared-mutability fight that raw
-`Rc<RefCell<T>>` nodes would bring, and it is cache-friendlier as a bonus.
+The textbook representation, translated into Rust the only way the language
+allows: every node is a separate heap allocation, and every node *owns* the
+next one. `head: Option<Box<Node<T>>>` is an owning pointer to the first node
+(or nothing, for the empty list), and the final node's `next` is `None` —
+Rust's spelling of a NULL-terminated chain, since the language has no NULL.
 
 Key properties:
 
-- `push_front` and `pop_front` run in `O(1)`.
-- `push_back` walks the whole chain, so it is `O(n)`; a tail handle would fix
-  that only for this list, never for insertions in the middle.
-- `reverse` rewires `next` handles in place with two moving handles:
-  `O(n)` time, `O(1)` extra space.
-- The arena never compacts: a popped node leaves a tombstone slot so the
-  handles of the remaining nodes stay stable.
+- `push_front` and `pop_front` run in `O(1)`: the new node takes over
+  ownership of the chain, or the second node is promoted to head.
+- `push_back` has no tail pointer to lean on, so it walks the chain one node
+  at a time through mutable borrows and runs in `O(n)`. A tail pointer would
+  not help this design anyway: in Rust, the head owns the whole chain, and a
+  reachable tail pointer inside the same owner makes the compiler reject the
+  update of the last node.
+- `reverse` re-splices ownership in place: `O(n)` time, no reallocations.
+- Full ownership also means dropping a long list frees it node by node,
+  recursively.
 
 Run the example and the tests with:
 

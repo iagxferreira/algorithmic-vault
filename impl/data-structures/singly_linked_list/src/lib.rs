@@ -1,93 +1,83 @@
-//! A singly linked list whose nodes live in an arena: a `Vec` of nodes
-//! addressed by `usize` handles instead of pointers.
+//! A singly linked list where every node is its own heap allocation.
 //!
-//! Each node owns its value, so there is no shared mutable state to fight the
-//! borrow checker over. In exchange, the arena never compacts: popping leaves
-//! a tombstone slot behind so the handles of live nodes stay valid, and the
-//! structure trades one slot of wasted memory per removal for index-stable
-//! nodes.
+//! The head holds an owned pointer to the first node; each node owns the
+//! next, and the last node's `next` is `None` — the Rust translation of a
+//! NULL-terminated chain, since the language has no `NULL`. One consequence
+//! of full ownership is that traversal and splicing work through borrows
+//! rather than handles, so operations like `push_back` walk the chain one
+//! node at a time with mutable borrows instead of holding integer indices.
 
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Debug, Default, PartialEq)]
 pub struct SinglyLinkedList<T> {
-    arena: Vec<Node<T>>,
-    head: Option<usize>,
+    head: Option<Box<Node<T>>>,
     len: usize,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 struct Node<T> {
-    value: Option<T>,
-    next: Option<usize>,
+    value: T,
+    next: Option<Box<Node<T>>>,
 }
 
 impl<T> SinglyLinkedList<T> {
     pub fn new() -> Self {
-        Self {
-            arena: Vec::new(),
-            head: None,
-            len: 0,
-        }
+        Self { head: None, len: 0 }
     }
 
-    /// Prepends to the front. The new node points at the current head, and
-    /// the head handle moves to the new node. `O(1)` time, `O(1)` arena
-    /// space.
+    /// Prepends to the front. The new allocation starts owning whatever the
+    /// head owned, and the head moves to the new node. One allocation,
+    /// `O(1)`.
     pub fn push_front(&mut self, value: T) {
-        self.arena.push(Node {
-            value: Some(value),
-            next: self.head,
-        });
-        self.head = Some(self.arena.len() - 1);
+        self.head = Some(Box::new(Node {
+            value,
+            next: self.head.take(),
+        }));
         self.len += 1;
     }
 
-    /// Appends at the end. With no tail handle to spare, this walks the whole
-    /// chain from the head: `O(n)` time, `O(1)` arena space.
+    /// Appends at the end. With no tail pointer to fall back on, this walks
+    /// the chain one node at a time through mutable borrows until the borrow
+    /// lands on the `None` tail — then swaps the allocation in. `O(n)`.
     pub fn push_back(&mut self, value: T) {
-        let index = {
-            self.arena.push(Node {
-                value: Some(value),
-                next: None,
-            });
-            self.arena.len() - 1
-        };
+        let mut tail = &mut self.head;
 
-        match self.tail_index() {
-            Some(tail) => self.arena[tail].next = Some(index),
-            None => self.head = Some(index),
+        while tail.is_some() {
+            tail = &mut tail.as_mut().expect("the loop proves it").next;
         }
+
+        *tail = Some(Box::new(Node { value, next: None }));
         self.len += 1;
     }
 
-    /// Removes the front node and returns its value, or `None` when the list
-    /// is empty. The popped node's arena slot becomes a tombstone. `O(1)`.
+    /// Removes the front node and returns its value, promoting its `next`
+    /// — the whole rest of the chain — to be the new head. `O(1)`.
     pub fn pop_front(&mut self) -> Option<T> {
-        let head = self.head?;
-        self.head = self.arena[head].next;
+        let front = self.head.take()?;
+        self.head = front.next;
         self.len -= 1;
-        self.arena[head].value.take()
+        Some(front.value)
     }
 
     /// Borrows the front value without removing it. `O(1)`.
     pub fn front(&self) -> Option<&T> {
-        let head = self.head?;
-        self.arena[head].value.as_ref()
+        self.head.as_ref().map(|front| &front.value)
     }
 
-    /// Reverses the list in place by rewiring the `next` handles, using two
-    /// moving handles: `current` walks forward while `previous` collects the
-    /// already-reversed prefix. `O(n)` time, `O(1)` extra space.
+    /// Reverses the chain in place by unwinding the spine one owned node at a
+    /// time: take the front, point its `next` at what has been reversed so
+    /// far, keep the rest. When the walk exhausts the spine the original
+    /// tail becomes the head. `O(n)` time, no reallocations.
     pub fn reverse(&mut self) {
-        let mut previous: Option<usize> = None;
-        let mut current = self.head;
+        let mut reversed: Option<Box<Node<T>>> = None;
+        let mut remaining = self.head.take();
 
-        while let Some(index) = current {
-            current = self.arena[index].next;
-            self.arena[index].next = previous;
-            previous = Some(index);
+        while let Some(mut node) = remaining {
+            remaining = node.next.take();
+            node.next = reversed.take();
+            reversed = Some(node);
         }
 
-        self.head = previous;
+        self.head = reversed;
     }
 
     pub fn len(&self) -> usize {
@@ -98,25 +88,9 @@ impl<T> SinglyLinkedList<T> {
         self.head.is_none()
     }
 
-    /// Walks the chain from the front to the end and returns the tail node.
-    /// `O(n)`; the empty list has no tail.
-    fn tail_index(&self) -> Option<usize> {
-        let mut current = self.head;
-
-        while let Some(index) = current {
-            if self.arena[index].next.is_none() {
-                return Some(index);
-            }
-            current = self.arena[index].next;
-        }
-
-        None
-    }
-
     pub fn iter(&self) -> Iter<'_, T> {
         Iter {
-            arena: &self.arena,
-            current: self.head,
+            node: self.head.as_deref(),
         }
     }
 }
@@ -125,18 +99,16 @@ impl<T> SinglyLinkedList<T> {
 /// [`SinglyLinkedList::iter`].
 #[derive(Clone, Debug)]
 pub struct Iter<'a, T> {
-    arena: &'a [Node<T>],
-    current: Option<usize>,
+    node: Option<&'a Node<T>>,
 }
 
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let index = self.current?;
-        let node = &self.arena[index];
-        self.current = node.next;
-        node.value.as_ref()
+        let node = self.node?;
+        self.node = node.next.as_deref();
+        Some(&node.value)
     }
 }
 
