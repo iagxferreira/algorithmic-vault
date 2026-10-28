@@ -4,34 +4,37 @@
 
 namespace searching {
 
-const Box *iterative_depth_first_search(const Box &main_box,
-                                        const BoxItem &target) {
-  std::stack<const Box *> boxes_to_visit;
-  boxes_to_visit.push(&main_box);
+const data_structures::TreeNode *iterative_depth_first_search(
+    const data_structures::TreeNode &root,
+    const data_structures::TreeItem &target) {
+  std::stack<const data_structures::TreeNode *> nodes_to_visit;
+  nodes_to_visit.push(&root);
 
-  while (!boxes_to_visit.empty()) {
-    const Box *current = boxes_to_visit.top();
-    boxes_to_visit.pop();
+  while (!nodes_to_visit.empty()) {
+    const data_structures::TreeNode *current = nodes_to_visit.top();
+    nodes_to_visit.pop();
 
-    if (current->key == target) {
+    if (current->item == target) {
       return current;
     }
 
-    for (const Box &nested_box : current->nested_boxes) {
-      boxes_to_visit.push(&nested_box);
+    for (const auto &child : current->children) {
+      nodes_to_visit.push(child.get());
     }
   }
 
   return nullptr;
 }
 
-const Box *recursive_depth_first_search(const Box &main_box,
-                                        const BoxItem &target) {
-  if (main_box.key == target)
-    return &main_box;
+const data_structures::TreeNode *recursive_depth_first_search(
+    const data_structures::TreeNode &root,
+    const data_structures::TreeItem &target) {
+  if (root.item == target)
+    return &root;
 
-  for (const Box &nested_box : main_box.nested_boxes) {
-    const Box *found = recursive_depth_first_search(nested_box, target);
+  for (const auto &child : root.children) {
+    const data_structures::TreeNode *found =
+        recursive_depth_first_search(*child, target);
     if (found != nullptr)
       return found;
   }
@@ -39,4 +42,4 @@ const Box *recursive_depth_first_search(const Box &main_box,
   return nullptr;
 }
 
-} // namespace searching
+}  // namespace searching

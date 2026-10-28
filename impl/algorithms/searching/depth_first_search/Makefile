@@ -1,6 +1,8 @@
 CXX ?= g++
 CXXFLAGS ?= -std=c++20 -O2 -Wall -Wextra -Wshadow -pedantic
 BUILD_DIR := build
+TREE_DIR := ../../../data-structures/tree
+CPPFLAGS := -I$(TREE_DIR)
 EXAMPLE := $(BUILD_DIR)/example
 TEST := $(BUILD_DIR)/depth_first_search_test
 RECURSIVE_TEST := $(BUILD_DIR)/recursive_depth_first_search_test
@@ -13,17 +15,17 @@ build: $(EXAMPLE)
 
 example: $(EXAMPLE)
 
-$(EXAMPLE): depth_first_search.cpp depth_first_search.h depth_first_search_example.cpp
+$(EXAMPLE): depth_first_search.cpp depth_first_search.h depth_first_search_example.cpp $(TREE_DIR)/tree.cpp $(TREE_DIR)/tree.h
 	mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) depth_first_search.cpp depth_first_search_example.cpp -o $(EXAMPLE)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) depth_first_search.cpp depth_first_search_example.cpp $(TREE_DIR)/tree.cpp -o $(EXAMPLE)
 
-$(TEST): depth_first_search.cpp depth_first_search.h depth_first_search_test.cpp
+$(TEST): depth_first_search.cpp depth_first_search.h depth_first_search_test.cpp $(TREE_DIR)/tree.cpp $(TREE_DIR)/tree.h
 	mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) depth_first_search.cpp depth_first_search_test.cpp -o $(TEST)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) depth_first_search.cpp depth_first_search_test.cpp $(TREE_DIR)/tree.cpp -o $(TEST)
 
-$(RECURSIVE_TEST): depth_first_search.cpp depth_first_search.h recursive_depth_first_search_test.cpp
+$(RECURSIVE_TEST): depth_first_search.cpp depth_first_search.h recursive_depth_first_search_test.cpp $(TREE_DIR)/tree.cpp $(TREE_DIR)/tree.h
 	mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) depth_first_search.cpp recursive_depth_first_search_test.cpp -o $(RECURSIVE_TEST)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) depth_first_search.cpp recursive_depth_first_search_test.cpp $(TREE_DIR)/tree.cpp -o $(RECURSIVE_TEST)
 
 run: $(EXAMPLE)
 	./$(EXAMPLE)

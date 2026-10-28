@@ -1,25 +1,19 @@
 #pragma once
 
-#include <optional>
-#include <string>
-#include <vector>
+#include "tree.h"
 
 namespace searching {
 
-using BoxItem = std::string;
+// Returns the node whose item equals target, or nullptr when it is not
+// present. Visits nodes with an explicit stack (depth-first).
+const data_structures::TreeNode* iterative_depth_first_search(
+    const data_structures::TreeNode& root,
+    const data_structures::TreeItem& target);
 
-// A node in the box tree. Nested boxes are this node's children.
-struct Box {
-    std::optional<BoxItem> key;
-    std::vector<Box> nested_boxes;
-};
-
-// Returns the box containing target, or nullptr when target is not present.
-const Box* iterative_depth_first_search(const Box& main_box,
-                                       const BoxItem& target);
-
-// Returns the box containing target, or nullptr when target is not present.
-const Box* recursive_depth_first_search(const Box& main_box,
-                                        const BoxItem& target);
+// Returns the node whose item equals target, or nullptr when it is not
+// present. Recurses into each child.
+const data_structures::TreeNode* recursive_depth_first_search(
+    const data_structures::TreeNode& root,
+    const data_structures::TreeItem& target);
 
 }  // namespace searching
