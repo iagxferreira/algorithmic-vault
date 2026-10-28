@@ -23,7 +23,12 @@ impl/
         binary_addition_test.cpp
         Makefile
   data-structures/
-    .gitkeep
+    tree/
+      tree.h
+      tree.cpp
+      example.cpp
+      tree_test.cpp
+      Makefile
   utils/
     print_vector.h
 ```
