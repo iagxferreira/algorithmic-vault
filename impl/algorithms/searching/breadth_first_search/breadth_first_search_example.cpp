@@ -1,21 +1,18 @@
 #include "breadth_first_search.h"
 
 #include <iostream>
+#include <optional>
 #include <string>
 
 int main() {
-    const searching::Box main_box{
-        std::nullopt,
-        {
-            {std::nullopt, {}},
-            {std::string{"golden key"}, {}},
-        },
-    };
+    data_structures::TreeNode main_tree;
+    data_structures::add_child(main_tree, std::nullopt);
+    data_structures::add_child(main_tree, "golden key");
 
-    const searching::Box* found =
-        searching::iterative_breadth_first_search(main_box, "golden key");
+    const data_structures::TreeNode* found =
+        searching::iterative_breadth_first_search(main_tree, "golden key");
     if (found != nullptr) {
-        std::cout << "Found the key in its box!\n";
+        std::cout << "Found the key in its node!\n";
     } else {
         std::cout << "Key not found.\n";
     }

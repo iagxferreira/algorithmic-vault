@@ -5,21 +5,22 @@
 
 namespace searching {
 
-const Box *iterative_breadth_first_search(const Box &main_box,
-                                          const BoxItem &target) {
-  std::deque<const Box *> boxes_to_visit;
-  boxes_to_visit.push_back(&main_box);
+const data_structures::TreeNode *iterative_breadth_first_search(
+    const data_structures::TreeNode &root,
+    const data_structures::TreeItem &target) {
+  std::deque<const data_structures::TreeNode *> nodes_to_visit;
+  nodes_to_visit.push_back(&root);
 
-  while (!boxes_to_visit.empty()) {
-    const Box *current = boxes_to_visit.front();
-    boxes_to_visit.pop_front();
+  while (!nodes_to_visit.empty()) {
+    const data_structures::TreeNode *current = nodes_to_visit.front();
+    nodes_to_visit.pop_front();
 
-    if (current->key == target) {
+    if (current->item == target) {
       return current;
     }
 
-    for (const Box &nested_box : current->nested_boxes) {
-      boxes_to_visit.push_back(&nested_box);
+    for (const auto &child : current->children) {
+      nodes_to_visit.push_back(child.get());
     }
   }
 
@@ -28,19 +29,20 @@ const Box *iterative_breadth_first_search(const Box &main_box,
 
 namespace {
 
-const Box *search_frontier(std::deque<const Box *> frontier,
-                           const BoxItem &target) {
+const data_structures::TreeNode *search_frontier(
+    std::deque<const data_structures::TreeNode *> frontier,
+    const data_structures::TreeItem &target) {
   if (frontier.empty())
     return nullptr;
 
-  const Box *current = frontier.front();
+  const data_structures::TreeNode *current = frontier.front();
   frontier.pop_front();
 
-  if (current->key == target)
+  if (current->item == target)
     return current;
 
-  for (const Box &nested_box : current->nested_boxes) {
-    frontier.push_back(&nested_box);
+  for (const auto &child : current->children) {
+    frontier.push_back(child.get());
   }
 
   return search_frontier(std::move(frontier), target);
@@ -48,10 +50,11 @@ const Box *search_frontier(std::deque<const Box *> frontier,
 
 }  // namespace
 
-const Box *recursive_breadth_first_search(const Box &main_box,
-                                          const BoxItem &target) {
-  std::deque<const Box *> frontier;
-  frontier.push_back(&main_box);
+const data_structures::TreeNode *recursive_breadth_first_search(
+    const data_structures::TreeNode &root,
+    const data_structures::TreeItem &target) {
+  std::deque<const data_structures::TreeNode *> frontier;
+  frontier.push_back(&root);
 
   return search_frontier(std::move(frontier), target);
 }
