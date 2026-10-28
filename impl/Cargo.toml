@@ -1,5 +1,5 @@
 [workspace]
 resolver = "2"
 # One member per algorithm crate, registered as its folder is added.
-members = ["algorithms/recursion/factorial", "algorithms/recursion/list_recursion", "algorithms/searching/linear_search", "algorithms/searching/minimum_search", "algorithms/searching/binary_search", "algorithms/searching/depth_first_search", "algorithms/sorting/insertion_sort", "algorithms/sorting/quick_sort", "algorithms/sorting/selection_sort", "data-structures/singly_linked_list", "data-structures/doubly_linked_list", "exercises/clrs/binary_addition"]
+members = ["algorithms/recursion/factorial", "algorithms/recursion/list_recursion", "algorithms/searching/linear_search", "algorithms/searching/minimum_search", "algorithms/searching/binary_search", "algorithms/searching/depth_first_search", "algorithms/searching/breadth_first_search", "algorithms/sorting/insertion_sort", "algorithms/sorting/quick_sort", "algorithms/sorting/selection_sort", "data-structures/singly_linked_list", "data-structures/doubly_linked_list", "exercises/clrs/binary_addition"]
 
