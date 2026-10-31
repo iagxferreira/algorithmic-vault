@@ -22,6 +22,12 @@ impl/
         example.cpp
         binary_addition_test.cpp
         Makefile
+    weiss/
+      chapter-01/
+        01-selection-problem/
+          README.md
+          main.cpp
+          Makefile
   data-structures/
     tree/
       tree.h
